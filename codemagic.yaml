@@ -20,9 +20,9 @@ triggering:
       include: false
     - pattern: included-tag
       include: true
-  cancel_previous_builds: false  # Set to `true` to automatically cancel outdated webhook builds
+  cancel_previous_builds: true  # Automatically cancel outdated webhook builds
 
-workflows:
+workflows:cluded-targ
   hello-world:
     name: Hello world workflow
     scripts:
