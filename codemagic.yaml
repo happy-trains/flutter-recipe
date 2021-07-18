@@ -27,6 +27,9 @@ workflows:
     name: Hello world workflow
     scripts:
         - echo "Hello World!"
+    triggering:
+      events:
+        - push
     when:
       changeset:
         includes:
