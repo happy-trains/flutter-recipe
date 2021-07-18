@@ -27,3 +27,9 @@ workflows:
     name: Hello world workflow
     scripts:
         - echo "Hello World!"
+    when:
+      changeset:
+        includes:
+          - '.'
+        excludes:
+          - '**/*.md'
