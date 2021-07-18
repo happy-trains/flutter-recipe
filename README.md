@@ -1,4 +1,4 @@
-# Recipe <img src="assets/recipe-transparent.png" alt="logo" width="40" height="40"> [![Codemagic build status][status]][latest-build]
+# Recipe <img src="assets/recipe-transparent.png" alt="logo" width="40" height="40"> [![Codemagic build status][hello-world]][latest-build]
 A multi-platform app which targets mobile, web, and desktop using the Flutter framework.
 
 # Goals
@@ -17,5 +17,5 @@ Since the project is focused solely on the search functionality, not much emphas
 [pub]: https://pub.dev/packages/typesense
 [recipe-search]: https://recipe-search.typesense.org
 [codemagic]: https://flutterci.com/
-[status]: https://api.codemagic.io/apps/60f461de0c5097d1ca736815/60f461de0c5097d1ca736814/status_badge.svg
+[hello-world]: https://api.codemagic.io/apps/60f461de0c5097d1ca736815/hello-world/status_badge.svg
 [latest-build]: https://codemagic.io/apps/60f461de0c5097d1ca736815/60f461de0c5097d1ca736814/latest_build
