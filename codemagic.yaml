@@ -1,17 +1,4 @@
 workflows:
-  hello-world:
-    name: Hello world workflow
-    scripts:
-        - echo "Hello World!"
-    triggering:
-      events:
-        - push
-    when:
-      changeset:
-        includes:
-          - '.'
-        excludes:
-          - '**/*.md'
 
   test:
     name: Test
