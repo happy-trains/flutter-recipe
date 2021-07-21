@@ -15,16 +15,16 @@ workflows:
         - push
         - tag
       cancel_previous_builds: true  # Automatically cancel outdated webhook builds
-        branch_patterns:              # Include or exclude watched branches
-          - pattern: '*'
-            include: true
-            source: true
-          - pattern: excluded-target
-            include: false
-            source: false
-          - pattern: included-source
-            include: true
-            source: true
+      branch_patterns:              # Include or exclude watched branches
+        - pattern: '*'
+          include: true
+          source: true
+        - pattern: excluded-target
+          include: false
+          source: false
+        - pattern: included-source
+          include: true
+          source: true
     when:
       changeset:
         includes:
@@ -32,7 +32,8 @@ workflows:
         excludes:
           - '**/*.md'
     scripts:
-      - name: &test          # Defined section; can be reused elsewhere using *test
+      - &test                       # Defined section; can be reused elsewhere using *test
+        name: test
         script: |
           echo "Testing the app"
           flutter test
