@@ -1,5 +1,5 @@
 # Recipe <img src="assets/recipe-transparent.png" alt="logo" width="40" height="40"> [![Codemagic build status][hello-world]][latest-build]
-A multi-platform app which targets mobile, web, and desktop using the Flutter framework.
+A multi-platform app that targets mobile, web, and desktop using the Flutter framework.
 
 # Goals
  **Collaboration** is the  first and foremost goal of this project, followed by:
