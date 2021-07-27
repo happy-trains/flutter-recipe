@@ -8,11 +8,11 @@ A multi-platform app that targets mobile, web, and desktop using the Flutter fra
 - CI/CD using [Codemagic][codemagic].
 
 # Non-Goals
-Since the project is focused solely on the search functionality, not much emphasis would be given to:
+This project solely focuses on the search functionality and does not give much emphasis to:
 - UI/UX
 - Themes
 
-Check out [Discussions tab][discuss] tab to follow the progress of the project.
+Check out the [Discussions tab][discuss] tab to follow the progress of the project.
 
 [pub]: https://pub.dev/packages/typesense
 [recipe-search]: https://recipe-search.typesense.org
