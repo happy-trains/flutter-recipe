@@ -1,0 +1,6 @@
+# Command to generate icons: flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/recipe.png"
