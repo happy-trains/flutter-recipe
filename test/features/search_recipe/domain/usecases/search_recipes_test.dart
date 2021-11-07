@@ -117,8 +117,8 @@ void main() {
               query: searchQuery, pageNumber: pageNumber, filter: filter))
           .thenAnswer((_) async => Right(mockResult));
       // act
-      final result = await usecase.execute(
-          query: searchQuery, pageNumber: pageNumber, filter: filter);
+      final result = await usecase(
+          Params(query: searchQuery, pageNumber: pageNumber, filter: filter));
       // assert
       expect(result, Right(mockResult));
       verify(mockRecipesRepository.search(
