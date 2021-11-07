@@ -18,21 +18,26 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   lints: ^1.0.1
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  dartz: ^0.10.0
+  flutter_bloc: ^7.3.3
+  get_it: ^7.2.0
+  connectivity_plus: ^2.0.2
+  typesense: ^0.2.0
+  infinite_scroll_pagination: ^3.1.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.9.1"
+  mockito: 5.0.16
+  build_runner: ^2.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -45,9 +50,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # Uncomment this when using flutter_launcher_icons:
-  # assets:
-  #   - assets/
+  assets:
+    - assets/recipe.svg
+    - assets/recipe-transparent.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
