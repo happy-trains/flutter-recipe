@@ -37,5 +37,6 @@ workflows:
         script: |
           echo "Running the unit tests"
           mkdir -p test-results
+          dart run build_runner build
           flutter test --machine > test-results/flutter.json    
         test_report: test-results/flutter.json
