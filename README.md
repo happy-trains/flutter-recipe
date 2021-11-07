@@ -14,6 +14,11 @@ Since the project is focused solely on the search functionality, not much emphas
 
 Check out [Discussions tab][discuss] tab to follow the progress of the project.
 
+# Running tests
+Use the following command to generate the mock files before running tests:
+
+`dart run build_runner build`
+
 [pub]: https://pub.dev/packages/typesense
 [recipe-search]: https://recipe-search.typesense.org
 [codemagic]: https://flutterci.com/
