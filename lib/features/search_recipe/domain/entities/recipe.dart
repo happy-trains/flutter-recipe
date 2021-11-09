@@ -1,4 +1,6 @@
-class Recipe {
+import 'package:equatable/equatable.dart';
+
+class Recipe extends Equatable {
   final List<String> directions;
   final String id;
   final List<String> ingredientNames;
@@ -17,14 +19,14 @@ class Recipe {
     required this.title,
   });
 
-  factory Recipe.fromJson(Map<String, dynamic> json) => Recipe(
-        directions: json['directions'].cast<String>(),
-        id: json['id'],
-        ingredientNames: json['ingredient_names'].cast<String>(),
-        ingredientsWithMeasurements:
-            json['ingredients_with_measurements'].cast<String>(),
-        link: json['link'],
-        recipeId: json['recipe_id'],
-        title: json['title'],
-      );
+  @override
+  List<Object?> get props => [
+        directions,
+        id,
+        ingredientNames,
+        ingredientsWithMeasurements,
+        link,
+        recipeId,
+        title
+      ];
 }

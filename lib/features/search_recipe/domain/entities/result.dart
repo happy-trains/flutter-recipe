@@ -1,9 +1,11 @@
-import 'facet_counts.dart';
+import 'package:equatable/equatable.dart';
+
+import 'facet_count.dart';
 import 'hit.dart';
 import 'request_params.dart';
 
-class Result {
-  final List<FacetCounts> facetCounts;
+class Result extends Equatable {
+  final List<FacetCount> facetCounts;
   final int found;
   final List<Hit> hits;
   final int outOf;
@@ -21,22 +23,7 @@ class Result {
     required this.searchTime,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    final facetCounts = (json['facet_counts'] as List)
-        .map((f) => FacetCounts.fromJson(f))
-        .toList();
-    final hits = (json['hits'] as List).map((h) => Hit.fromJson(h)).toList();
-    final requestParams = RequestParams.fromJson(json['request_params']);
-    final searchTime = Duration(milliseconds: json['search_time_ms']);
-
-    return Result(
-      facetCounts: facetCounts,
-      found: json['found'],
-      hits: hits,
-      outOf: json['out_of'],
-      page: json['page'],
-      requestParams: requestParams,
-      searchTime: searchTime,
-    );
-  }
+  @override
+  List<Object?> get props =>
+      [facetCounts, found, hits, outOf, page, requestParams, searchTime];
 }

@@ -1,4 +1,6 @@
-class RequestParams {
+import 'package:equatable/equatable.dart';
+
+class RequestParams extends Equatable {
   final String collectionName;
   final int perPage;
   final String query;
@@ -9,9 +11,10 @@ class RequestParams {
     required this.query,
   });
 
-  factory RequestParams.fromJson(Map<String, dynamic> json) => RequestParams(
-        collectionName: json['collection_name'],
-        perPage: json['per_page'],
-        query: json['q'],
-      );
+  @override
+  List<Object?> get props => [
+        collectionName,
+        perPage,
+        query,
+      ];
 }
