@@ -1,4 +1,6 @@
-class Highlight {
+import 'package:equatable/equatable.dart';
+
+class Highlight extends Equatable {
   final String field;
   final List<String> matchedTokens;
   final String snippet;
@@ -9,9 +11,6 @@ class Highlight {
     required this.snippet,
   });
 
-  factory Highlight.fromJson(Map<String, dynamic> json) => Highlight(
-        field: json['field'],
-        matchedTokens: json['matched_tokens'].cast<String>(),
-        snippet: json['snippet'],
-      );
+  @override
+  List<Object?> get props => [field, matchedTokens, snippet];
 }

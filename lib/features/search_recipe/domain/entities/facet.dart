@@ -1,4 +1,6 @@
-class Facet {
+import 'package:equatable/equatable.dart';
+
+class Facet extends Equatable {
   /// count
   final int documentCount;
   final String highlighted;
@@ -10,9 +12,6 @@ class Facet {
     required this.value,
   });
 
-  factory Facet.fromJson(Map<String, dynamic> json) => Facet(
-        documentCount: json['count'],
-        highlighted: json['highlighted'],
-        value: json['value'],
-      );
+  @override
+  List<Object?> get props => [documentCount, highlighted, value];
 }

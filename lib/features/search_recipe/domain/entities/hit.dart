@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'recipe.dart';
 import 'highlight.dart';
 
-class Hit {
+class Hit extends Equatable {
   final Recipe document;
   final List<Highlight> highlights;
   final int textMatch;
@@ -12,16 +14,6 @@ class Hit {
     required this.textMatch,
   });
 
-  factory Hit.fromJson(Map<String, dynamic> json) {
-    final document = Recipe.fromJson(json['document']);
-
-    final highlights =
-        (json['highlights'] as List).map((h) => Highlight.fromJson(h)).toList();
-
-    return Hit(
-      document: document,
-      highlights: highlights,
-      textMatch: json['text_match'],
-    );
-  }
+  @override
+  List<Object?> get props => [document, highlights, textMatch];
 }
