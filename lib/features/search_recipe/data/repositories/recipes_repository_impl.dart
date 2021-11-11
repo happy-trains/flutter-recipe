@@ -7,7 +7,7 @@ import '../../data/datasources/recipes_local_data_source.dart';
 import '../../data/datasources/recipes_remote_data_source.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/exception.dart';
-import '../../../../core/platform/network_info.dart';
+import '../../../../core/network/network_info.dart';
 
 class RecipesRepositoryImpl implements RecipesRepository {
   final RecipesRemoteDataSource remoteDataSource;
