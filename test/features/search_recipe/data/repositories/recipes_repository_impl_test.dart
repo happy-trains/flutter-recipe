@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:recipe/core/error/exception.dart';
 import 'package:recipe/core/error/failures.dart';
-import 'package:recipe/core/platform/network_info.dart';
+import 'package:recipe/core/network/network_info.dart';
 import 'package:recipe/features/search_recipe/data/datasources/recipes_local_data_source.dart';
 import 'package:recipe/features/search_recipe/data/datasources/recipes_remote_data_source.dart';
 import 'package:recipe/features/search_recipe/data/models/result_model.dart';
