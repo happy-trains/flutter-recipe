@@ -1,14 +1,14 @@
 import 'facet_model.dart';
 
 import '../../domain/entities/facet_count.dart';
-import '../../domain/entities/facet.dart';
 
 class FacetCountModel extends FacetCount {
   FacetCountModel({
-    required List<Facet> facets,
+    required List<FacetModel> facets,
     required String fieldName,
-    // required  this.stats,
-  }) : super(facets: facets, fieldName: fieldName);
+  }) :
+        // _facets = facets,
+        super(facets: facets, fieldName: fieldName);
 
   factory FacetCountModel.fromJson(Map<String, dynamic> json) {
     final facets =
@@ -21,5 +21,14 @@ class FacetCountModel extends FacetCount {
       fieldName: json['field_name'],
 // stats: stats,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    final list = facets.cast<FacetModel>().map((f) => f.toJson()).toList();
+
+    return {
+      'counts': list,
+      'field_name': fieldName,
+    };
   }
 }

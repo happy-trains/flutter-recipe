@@ -25,4 +25,14 @@ class HitModel extends Hit {
       textMatch: json['text_match'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final list =
+        highlights.cast<HighlightModel>().map((h) => h.toJson()).toList();
+    return {
+      'document': (document as RecipeModel).toJson(),
+      'highlights': list,
+      'text_match': textMatch,
+    };
+  }
 }

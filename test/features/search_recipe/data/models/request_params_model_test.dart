@@ -12,24 +12,42 @@ void main() {
     perPage: 1,
     query: 'Pizza',
   );
+  group('RequestParamsModel', () {
+    test(
+      'should be a subclass of RequestParams entity',
+      () async {
+        // assert
+        expect(tRequestParamsModel, isA<RequestParams>());
+      },
+    );
 
-  test(
-    'should be a subclass of RequestParams entity',
-    () async {
-      // assert
-      expect(tRequestParamsModel, isA<RequestParams>());
-    },
-  );
+    test(
+      'should return a model from json data',
+      () async {
+        // arrange
+        final json = jsonDecode(fixture('request_params.json'));
+        // act
+        final result = RequestParamsModel.fromJson(json);
+        // assert
+        expect(result, tRequestParamsModel);
+      },
+    );
 
-  test(
-    'should return a model from json data',
-    () async {
-      // arrange
-      final json = jsonDecode(fixture('request_params.json'));
-      // act
-      final result = RequestParamsModel.fromJson(json);
-      // assert
-      expect(result, tRequestParamsModel);
-    },
-  );
+    group('toJson', () {
+      test(
+        'should return a json map containing the proper data',
+        () async {
+          // act
+          final result = tRequestParamsModel.toJson();
+          // assert
+          final expectedMap = {
+            "collection_name": "recipes_1630513346",
+            "per_page": 1,
+            "q": "Pizza"
+          };
+          expect(result, equals(expectedMap));
+        },
+      );
+    });
+  });
 }
