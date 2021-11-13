@@ -13,23 +13,42 @@ void main() {
     snippet: '<mark>Pizza</mark>',
   );
 
-  test(
-    'should be a subclass of Highlight entity',
-    () async {
-      // assert
-      expect(tHighlightModel, isA<Highlight>());
-    },
-  );
+  group('Highlight', () {
+    test(
+      'should be a subclass of Highlight entity',
+      () async {
+        // assert
+        expect(tHighlightModel, isA<Highlight>());
+      },
+    );
 
-  test(
-    'should return a model from json data',
-    () async {
-      // arrange
-      final json = jsonDecode(fixture('highlight.json'));
-      // act
-      final result = HighlightModel.fromJson(json);
-      // assert
-      expect(result, tHighlightModel);
-    },
-  );
+    test(
+      'should return a model from json data',
+      () async {
+        // arrange
+        final json = jsonDecode(fixture('highlight.json'));
+        // act
+        final result = HighlightModel.fromJson(json);
+        // assert
+        expect(result, tHighlightModel);
+      },
+    );
+
+    group('toJson', () {
+      test(
+        'should return a json map containing the proper data',
+        () async {
+          // act
+          final result = tHighlightModel.toJson();
+          // assert
+          final expectedMap = {
+            "field": "title",
+            "matched_tokens": ["Pizza"],
+            "snippet": "<mark>Pizza</mark>"
+          };
+          expect(result, equals(expectedMap));
+        },
+      );
+    });
+  });
 }

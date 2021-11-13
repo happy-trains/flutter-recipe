@@ -12,4 +12,12 @@ class HighlightModel extends Highlight {
         matchedTokens: json['matched_tokens'].cast<String>(),
         snippet: json['snippet'],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'field': field,
+      'matched_tokens': matchedTokens,
+      'snippet': snippet,
+    };
+  }
 }

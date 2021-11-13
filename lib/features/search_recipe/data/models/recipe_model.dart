@@ -28,4 +28,15 @@ class RecipeModel extends Recipe {
         recipeId: json['recipe_id'],
         title: json['title'],
       );
+  Map<String, dynamic> toJson() {
+    return {
+      'directions': directions,
+      'id': id,
+      'ingredient_names': ingredientNames,
+      'ingredients_with_measurements': ingredientsWithMeasurements,
+      'link': link,
+      'recipe_id': recipeId,
+      'title': title,
+    };
+  }
 }

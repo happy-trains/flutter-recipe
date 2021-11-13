@@ -43,4 +43,22 @@ class ResultModel extends Result {
       searchTime: searchTime,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final _facetCounts =
+        facetCounts.cast<FacetCountModel>().map((f) => f.toJson()).toList();
+    final _hits = hits.cast<HitModel>().map((h) => h.toJson()).toList();
+    final _requestParams = (requestParams as RequestParamsModel).toJson();
+    final _searchTime = searchTime.inMilliseconds;
+
+    return {
+      'facet_counts': _facetCounts,
+      'found': found,
+      'hits': _hits,
+      'out_of': outOf,
+      'page': page,
+      'request_params': _requestParams,
+      'search_time_ms': _searchTime,
+    };
+  }
 }

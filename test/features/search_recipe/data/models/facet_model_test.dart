@@ -13,23 +13,42 @@ void main() {
     value: 'salt',
   );
 
-  test(
-    'should be a subclass of Facet entity',
-    () async {
-      // assert
-      expect(tFacetModel, isA<Facet>());
-    },
-  );
+  group('FacetModel', () {
+    test(
+      'should be a subclass of Facet entity',
+      () async {
+        // assert
+        expect(tFacetModel, isA<Facet>());
+      },
+    );
 
-  test(
-    'should return a model from json data',
-    () async {
-      // arrange
-      final json = jsonDecode(fixture('facet.json'));
-      // act
-      final result = FacetModel.fromJson(json);
-      // assert
-      expect(result, tFacetModel);
-    },
-  );
+    test(
+      'should return a model from json data',
+      () async {
+        // arrange
+        final json = jsonDecode(fixture('facet.json'));
+        // act
+        final result = FacetModel.fromJson(json);
+        // assert
+        expect(result, tFacetModel);
+      },
+    );
+
+    group('toJson', () {
+      test(
+        'should return a json map containing the proper data',
+        () async {
+          // act
+          final result = tFacetModel.toJson();
+          // assert
+          final expectedMap = {
+            "count": 8277,
+            "highlighted": "salt",
+            "value": "salt"
+          };
+          expect(result, equals(expectedMap));
+        },
+      );
+    });
+  });
 }

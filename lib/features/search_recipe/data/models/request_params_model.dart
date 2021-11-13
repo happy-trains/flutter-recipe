@@ -17,4 +17,12 @@ class RequestParamsModel extends RequestParams {
         perPage: json['per_page'],
         query: json['q'],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'collection_name': collectionName,
+      'per_page': perPage,
+      'q': query,
+    };
+  }
 }

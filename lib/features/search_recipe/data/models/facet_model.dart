@@ -15,4 +15,12 @@ class FacetModel extends Facet {
         highlighted: json['highlighted'],
         value: json['value'],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'count': documentCount,
+      'highlighted': highlighted,
+      'value': value,
+    };
+  }
 }
