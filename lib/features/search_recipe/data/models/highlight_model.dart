@@ -1,7 +1,7 @@
 import '../../domain/entities/highlight.dart';
 
 class HighlightModel extends Highlight {
-  HighlightModel({
+  const HighlightModel({
     required String field,
     required List<String> matchedTokens,
     required String snippet,

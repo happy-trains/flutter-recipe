@@ -7,7 +7,7 @@ import '../../domain/entities/facet_count.dart';
 import '../../domain/entities/hit.dart';
 
 class ResultModel extends Result {
-  ResultModel({
+  const ResultModel({
     required List<FacetCount> facetCounts,
     required int found,
     required List<Hit> hits,

@@ -1,7 +1,7 @@
 import '../../domain/entities/recipe.dart';
 
 class RecipeModel extends Recipe {
-  RecipeModel({
+  const RecipeModel({
     required List<String> directions,
     required String id,
     required List<String> ingredientNames,

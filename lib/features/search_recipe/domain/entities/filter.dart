@@ -3,7 +3,7 @@ class Filter {
   final List<String> filterValues;
   final bool exactMatch;
 
-  Filter({
+  const Filter({
     required this.fieldName,
     required this.filterValues,
     this.exactMatch = true,

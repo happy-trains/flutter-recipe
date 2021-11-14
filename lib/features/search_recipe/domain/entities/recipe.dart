@@ -9,7 +9,7 @@ class Recipe extends Equatable {
   final int recipeId;
   final String title;
 
-  Recipe({
+  const Recipe({
     required this.directions,
     required this.id,
     required this.ingredientNames,

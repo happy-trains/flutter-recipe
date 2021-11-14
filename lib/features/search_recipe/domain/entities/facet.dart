@@ -6,7 +6,7 @@ class Facet extends Equatable {
   final String highlighted;
   final String value;
 
-  Facet({
+  const Facet({
     required this.documentCount,
     required this.highlighted,
     required this.value,

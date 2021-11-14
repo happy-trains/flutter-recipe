@@ -13,7 +13,7 @@ class Result extends Equatable {
   final RequestParams requestParams;
   final Duration searchTime;
 
-  Result({
+  const Result({
     required this.facetCounts,
     required this.found,
     required this.hits,

@@ -3,7 +3,7 @@ import 'facet_model.dart';
 import '../../domain/entities/facet_count.dart';
 
 class FacetCountModel extends FacetCount {
-  FacetCountModel({
+  const FacetCountModel({
     required List<FacetModel> facets,
     required String fieldName,
   }) :

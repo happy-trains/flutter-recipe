@@ -5,7 +5,7 @@ class RequestParams extends Equatable {
   final int perPage;
   final String query;
 
-  RequestParams({
+  const RequestParams({
     required this.collectionName,
     required this.perPage,
     required this.query,
