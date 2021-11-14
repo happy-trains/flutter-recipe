@@ -8,7 +8,7 @@ class FacetCount extends Equatable {
   final String fieldName;
 // final	Stats stats;
 
-  FacetCount({
+  const FacetCount({
     required this.facets,
     required this.fieldName,
     // required  this.stats,

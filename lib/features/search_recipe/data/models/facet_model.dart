@@ -1,7 +1,7 @@
 import '../../domain/entities/facet.dart';
 
 class FacetModel extends Facet {
-  FacetModel({
+  const FacetModel({
     required int documentCount,
     required String highlighted,
     required String value,

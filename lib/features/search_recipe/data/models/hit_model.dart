@@ -6,7 +6,7 @@ import '../../domain/entities/hit.dart';
 import '../../domain/entities/highlight.dart';
 
 class HitModel extends Hit {
-  HitModel({
+  const HitModel({
     required Recipe document,
     required List<Highlight> highlights,
     required int textMatch,

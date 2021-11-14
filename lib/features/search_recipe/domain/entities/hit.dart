@@ -8,7 +8,7 @@ class Hit extends Equatable {
   final List<Highlight> highlights;
   final int textMatch;
 
-  Hit({
+  const Hit({
     required this.document,
     required this.highlights,
     required this.textMatch,

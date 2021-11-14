@@ -5,7 +5,7 @@ class Highlight extends Equatable {
   final List<String> matchedTokens;
   final String snippet;
 
-  Highlight({
+  const Highlight({
     required this.field,
     required this.matchedTokens,
     required this.snippet,

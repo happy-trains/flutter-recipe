@@ -1,7 +1,7 @@
 import '../../domain/entities/request_params.dart';
 
 class RequestParamsModel extends RequestParams {
-  RequestParamsModel({
+  const RequestParamsModel({
     required String collectionName,
     required int perPage,
     required String query,
