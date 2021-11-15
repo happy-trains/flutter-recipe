@@ -4,9 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:recipe/features/search_recipe/data/models/filter_model.dart';
 
 import 'package:recipe/features/search_recipe/domain/usecases/search_recipes.dart';
-import 'package:recipe/features/search_recipe/domain/entities/filter.dart';
 import 'package:recipe/features/search_recipe/data/models/result_model.dart';
 import 'package:recipe/features/search_recipe/domain/repositories/recipes_repository.dart';
 
@@ -25,7 +25,7 @@ void main() {
 
   final searchQuery = 'Pizza';
   final pageNumber = 1;
-  final filter = Filter(
+  final filter = FilterModel(
     fieldName: 'ingredient_names',
     filterValues: ['salt'],
   );

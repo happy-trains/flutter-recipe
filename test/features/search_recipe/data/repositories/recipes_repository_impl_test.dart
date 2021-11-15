@@ -9,9 +9,9 @@ import 'package:recipe/core/error/failures.dart';
 import 'package:recipe/core/network/network_info.dart';
 import 'package:recipe/features/search_recipe/data/datasources/recipes_local_data_source.dart';
 import 'package:recipe/features/search_recipe/data/datasources/recipes_remote_data_source.dart';
+import 'package:recipe/features/search_recipe/data/models/filter_model.dart';
 import 'package:recipe/features/search_recipe/data/models/result_model.dart';
 import 'package:recipe/features/search_recipe/data/repositories/recipes_repository_impl.dart';
-import 'package:recipe/features/search_recipe/domain/entities/filter.dart';
 import 'package:recipe/features/search_recipe/domain/entities/result.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
@@ -56,7 +56,7 @@ void main() {
   group('search', () {
     final searchQuery = 'Pizza';
     final pageNumber = 1;
-    final filter = Filter(
+    final filter = FilterModel(
       fieldName: 'ingredient_names',
       filterValues: ['salt'],
     );
