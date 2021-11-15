@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../entities/result.dart';
-import '../entities/filter.dart';
-import '../repositories/recipes_repository.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../../data/models/filter_model.dart';
+import '../entities/result.dart';
+import '../repositories/recipes_repository.dart';
 
 class SearchRecipes implements UseCase<Result, Params> {
   final RecipesRepository repository;
@@ -23,7 +23,7 @@ class SearchRecipes implements UseCase<Result, Params> {
 class Params extends Equatable {
   final String query;
   final int pageNumber;
-  final Filter? filter;
+  final FilterModel? filter;
 
   Params({required this.query, required this.pageNumber, this.filter});
 

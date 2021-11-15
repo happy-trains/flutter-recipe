@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 
-import '../../domain/entities/result.dart';
-import '../../domain/entities/filter.dart';
-import '../../domain/repositories/recipes_repository.dart';
+import '../../../../core/error/exception.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/network/network_info.dart';
 import '../../data/datasources/recipes_local_data_source.dart';
 import '../../data/datasources/recipes_remote_data_source.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/error/exception.dart';
-import '../../../../core/network/network_info.dart';
+import '../../domain/entities/result.dart';
+import '../../domain/repositories/recipes_repository.dart';
+import '../models/filter_model.dart';
 
 class RecipesRepositoryImpl implements RecipesRepository {
   final RecipesRemoteDataSource remoteDataSource;
@@ -22,7 +22,9 @@ class RecipesRepositoryImpl implements RecipesRepository {
 
   @override
   Future<Either<Failure, Result>> search(
-      {required String query, required int pageNumber, Filter? filter}) async {
+      {required String query,
+      required int pageNumber,
+      FilterModel? filter}) async {
     if (await networkInfo.isConnected) {
       try {
         final result = await remoteDataSource.search(
