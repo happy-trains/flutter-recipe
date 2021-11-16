@@ -20,6 +20,7 @@ class SearchRecipes implements UseCase<Result, Params> {
         filter: params.filter,
         facetBy: params.facetBy,
         maxFacetValues: params.maxFacetValues,
+        perPage: params.perPage,
       );
 }
 
@@ -30,6 +31,7 @@ class Params extends Equatable {
   final FilterModel? filter;
   final List<String>? facetBy;
   final int? maxFacetValues;
+  final int? perPage;
 
   Params({
     required this.query,
@@ -38,6 +40,7 @@ class Params extends Equatable {
     this.filter,
     this.facetBy,
     this.maxFacetValues,
+    this.perPage,
   });
 
   @override
@@ -48,5 +51,6 @@ class Params extends Equatable {
         filter,
         facetBy,
         maxFacetValues,
+        perPage,
       ];
 }

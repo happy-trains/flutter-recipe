@@ -13,6 +13,7 @@ abstract class RecipesRemoteDataSource {
     FilterModel? filter,
     List<String>? facetBy,
     int? maxFacetValues,
+    int? perPage,
   });
 
   /// Uses Typsense to get data.

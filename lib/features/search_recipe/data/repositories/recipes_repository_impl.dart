@@ -28,6 +28,7 @@ class RecipesRepositoryImpl implements RecipesRepository {
     FilterModel? filter,
     List<String>? facetBy,
     int? maxFacetValues,
+    int? perPage,
   }) async {
     if (await networkInfo.isConnected) {
       try {
@@ -38,6 +39,7 @@ class RecipesRepositoryImpl implements RecipesRepository {
           filter: filter,
           facetBy: facetBy,
           maxFacetValues: maxFacetValues,
+          perPage: perPage,
         );
 
         localDataSource.cacheResult(result);
