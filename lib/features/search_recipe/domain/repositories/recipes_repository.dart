@@ -12,6 +12,7 @@ abstract class RecipesRepository {
     FilterModel? filter,
     List<String>? facetBy,
     int? maxFacetValues,
+    int? perPage,
   });
 
   Future<Either<Failure, int>> getIndexSize();
