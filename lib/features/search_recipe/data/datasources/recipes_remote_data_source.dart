@@ -31,10 +31,14 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
 
   @override
   Future<int> getIndexSize() async {
-    final result =
-        await typesenseClient.collection('r').documents.search({'q': '*'});
+    try {
+      final result =
+          await typesenseClient.collection('r').documents.search({'q': '*'});
 
-    return ResultModel.fromJson(result).found;
+      return ResultModel.fromJson(result).found;
+    } on TypesenseException catch (_) {
+      throw ServerException();
+    }
   }
 
   Map<String, dynamic> generateSearchParameters({
@@ -83,19 +87,23 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     int? maxFacetValues,
     int? perPage,
   }) async {
-    final result = await typesenseClient
-        .collection('r')
-        .documents
-        .search(generateSearchParameters(
-          query: query,
-          queryBy: queryBy,
-          pageNumber: pageNumber,
-          filter: filter,
-          facetBy: facetBy,
-          maxFacetValues: maxFacetValues,
-          perPage: perPage,
-        ));
+    try {
+      final result = await typesenseClient
+          .collection('r')
+          .documents
+          .search(generateSearchParameters(
+            query: query,
+            queryBy: queryBy,
+            pageNumber: pageNumber,
+            filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
+            perPage: perPage,
+          ));
 
-    return ResultModel.fromJson(result);
+      return ResultModel.fromJson(result);
+    } on TypesenseException catch (_) {
+      throw ServerException();
+    }
   }
 }
