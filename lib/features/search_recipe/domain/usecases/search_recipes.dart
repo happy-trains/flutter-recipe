@@ -18,6 +18,8 @@ class SearchRecipes implements UseCase<Result, Params> {
         queryBy: params.queryBy,
         pageNumber: params.pageNumber,
         filter: params.filter,
+        facetBy: params.facetBy,
+        maxFacetValues: params.maxFacetValues,
       );
 }
 
@@ -26,14 +28,25 @@ class Params extends Equatable {
   final List<String> queryBy;
   final int pageNumber;
   final FilterModel? filter;
+  final List<String>? facetBy;
+  final int? maxFacetValues;
 
   Params({
     required this.query,
     required this.queryBy,
     required this.pageNumber,
     this.filter,
+    this.facetBy,
+    this.maxFacetValues,
   });
 
   @override
-  List<Object?> get props => [query, pageNumber, filter];
+  List<Object?> get props => [
+        query,
+        queryBy,
+        pageNumber,
+        filter,
+        facetBy,
+        maxFacetValues,
+      ];
 }
