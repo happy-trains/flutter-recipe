@@ -7,6 +7,7 @@ import '../entities/result.dart';
 abstract class RecipesRepository {
   Future<Either<Failure, Result>> search({
     required String query,
+    required List<String> queryBy,
     required int pageNumber,
     FilterModel? filter,
   });

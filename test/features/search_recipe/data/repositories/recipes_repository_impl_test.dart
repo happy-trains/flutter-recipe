@@ -55,6 +55,7 @@ void main() {
 
   group('search', () {
     final searchQuery = 'Pizza';
+    final queryBy = ['title'];
     final pageNumber = 1;
     final filter = FilterModel(
       fieldName: 'ingredient_names',
@@ -67,6 +68,7 @@ void main() {
     setUp(() {
       when(mockRemoteDataSource.search(
         query: searchQuery,
+        queryBy: queryBy,
         pageNumber: pageNumber,
         filter: filter,
       )).thenAnswer((_) => Future.value(tResultModel));
@@ -81,6 +83,7 @@ void main() {
         // act
         repository.search(
           query: searchQuery,
+          queryBy: queryBy,
           pageNumber: pageNumber,
           filter: filter,
         );
@@ -96,12 +99,14 @@ void main() {
           // act
           final result = await repository.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           );
           // assert
           verify(mockRemoteDataSource.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           ));
@@ -115,12 +120,14 @@ void main() {
           // act
           await repository.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           );
           // assert
           verify(mockRemoteDataSource.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           ));
@@ -134,18 +141,21 @@ void main() {
           // arrange
           when(mockRemoteDataSource.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           )).thenThrow(ServerException());
           // act
           final result = await repository.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           );
           // assert
           verify(mockRemoteDataSource.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           ));
@@ -165,6 +175,7 @@ void main() {
           // act
           final result = await repository.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           );
@@ -182,6 +193,7 @@ void main() {
           // act
           final result = await repository.search(
             query: searchQuery,
+            queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
           );

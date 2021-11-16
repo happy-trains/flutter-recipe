@@ -24,6 +24,7 @@ void main() {
   });
 
   final searchQuery = 'Pizza';
+  final queryBy = ['title'];
   final pageNumber = 1;
   final filter = FilterModel(
     fieldName: 'ingredient_names',
@@ -36,15 +37,26 @@ void main() {
     () async {
       // arrange
       when(mockRecipesRepository.search(
-              query: searchQuery, pageNumber: pageNumber, filter: filter))
-          .thenAnswer((_) async => Right(mockResult));
+        query: searchQuery,
+        queryBy: queryBy,
+        pageNumber: pageNumber,
+        filter: filter,
+      )).thenAnswer((_) async => Right(mockResult));
       // act
-      final result = await usecase(
-          Params(query: searchQuery, pageNumber: pageNumber, filter: filter));
+      final result = await usecase(Params(
+        query: searchQuery,
+        queryBy: queryBy,
+        pageNumber: pageNumber,
+        filter: filter,
+      ));
       // assert
       expect(result, Right(mockResult));
       verify(mockRecipesRepository.search(
-          query: searchQuery, pageNumber: pageNumber, filter: filter));
+        query: searchQuery,
+        queryBy: queryBy,
+        pageNumber: pageNumber,
+        filter: filter,
+      ));
       verifyNoMoreInteractions(mockRecipesRepository);
     },
   );
