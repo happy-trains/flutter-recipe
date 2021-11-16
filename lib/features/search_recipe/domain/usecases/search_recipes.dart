@@ -15,6 +15,7 @@ class SearchRecipes implements UseCase<Result, Params> {
   @override
   Future<Either<Failure, Result>> call(Params params) => repository.search(
         query: params.query,
+        queryBy: params.queryBy,
         pageNumber: params.pageNumber,
         filter: params.filter,
       );
@@ -22,10 +23,16 @@ class SearchRecipes implements UseCase<Result, Params> {
 
 class Params extends Equatable {
   final String query;
+  final List<String> queryBy;
   final int pageNumber;
   final FilterModel? filter;
 
-  Params({required this.query, required this.pageNumber, this.filter});
+  Params({
+    required this.query,
+    required this.queryBy,
+    required this.pageNumber,
+    this.filter,
+  });
 
   @override
   List<Object?> get props => [query, pageNumber, filter];
