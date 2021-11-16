@@ -30,6 +30,9 @@ void main() {
     fieldName: 'ingredient_names',
     filterValues: ['salt'],
   );
+
+  final facetBy = ['ingredient_names'];
+  final maxFacetValues = 1;
   final mockResult = ResultModel.fromJson(jsonDecode(fixture('result.json')));
 
   test(
@@ -41,6 +44,8 @@ void main() {
         queryBy: queryBy,
         pageNumber: pageNumber,
         filter: filter,
+        facetBy: facetBy,
+        maxFacetValues: maxFacetValues,
       )).thenAnswer((_) async => Right(mockResult));
       // act
       final result = await usecase(Params(
@@ -48,6 +53,8 @@ void main() {
         queryBy: queryBy,
         pageNumber: pageNumber,
         filter: filter,
+        facetBy: facetBy,
+        maxFacetValues: maxFacetValues,
       ));
       // assert
       expect(result, Right(mockResult));
@@ -56,6 +63,8 @@ void main() {
         queryBy: queryBy,
         pageNumber: pageNumber,
         filter: filter,
+        facetBy: facetBy,
+        maxFacetValues: maxFacetValues,
       ));
       verifyNoMoreInteractions(mockRecipesRepository);
     },

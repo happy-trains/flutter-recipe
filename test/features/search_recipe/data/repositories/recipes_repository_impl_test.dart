@@ -61,6 +61,8 @@ void main() {
       fieldName: 'ingredient_names',
       filterValues: ['salt'],
     );
+    final facetBy = ['ingredient_names'];
+    final maxFacetValues = 1;
     final tResultModel =
         ResultModel.fromJson(jsonDecode(fixture('result.json')));
     final Result tResult = tResultModel;
@@ -71,6 +73,8 @@ void main() {
         queryBy: queryBy,
         pageNumber: pageNumber,
         filter: filter,
+        facetBy: facetBy,
+        maxFacetValues: maxFacetValues,
       )).thenAnswer((_) => Future.value(tResultModel));
     });
 
@@ -86,6 +90,8 @@ void main() {
           queryBy: queryBy,
           pageNumber: pageNumber,
           filter: filter,
+          facetBy: facetBy,
+          maxFacetValues: maxFacetValues,
         );
         // assert
         verify(mockNetworkInfo.isConnected);
@@ -102,6 +108,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           );
           // assert
           verify(mockRemoteDataSource.search(
@@ -109,6 +117,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           ));
           expect(result, equals(Right(tResult)));
         },
@@ -123,6 +133,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           );
           // assert
           verify(mockRemoteDataSource.search(
@@ -130,6 +142,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           ));
           verify(mockLocalDataSource.cacheResult(tResultModel));
         },
@@ -144,6 +158,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           )).thenThrow(ServerException());
           // act
           final result = await repository.search(
@@ -151,6 +167,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           );
           // assert
           verify(mockRemoteDataSource.search(
@@ -158,6 +176,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           ));
           verifyZeroInteractions(mockLocalDataSource);
           expect(result, equals(Left(ServerFailure())));
@@ -178,6 +198,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           );
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
@@ -196,6 +218,8 @@ void main() {
             queryBy: queryBy,
             pageNumber: pageNumber,
             filter: filter,
+            facetBy: facetBy,
+            maxFacetValues: maxFacetValues,
           );
           // assert
           verifyZeroInteractions(mockRemoteDataSource);

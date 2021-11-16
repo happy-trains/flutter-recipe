@@ -6,11 +6,14 @@ abstract class RecipesRemoteDataSource {
   /// Uses Typsense to get data.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<ResultModel> search(
-      {required String query,
-      required List<String> queryBy,
-      required int pageNumber,
-      FilterModel? filter});
+  Future<ResultModel> search({
+    required String query,
+    required List<String> queryBy,
+    required int pageNumber,
+    FilterModel? filter,
+    List<String>? facetBy,
+    int? maxFacetValues,
+  });
 
   /// Uses Typsense to get data.
   ///

@@ -21,11 +21,14 @@ class RecipesRepositoryImpl implements RecipesRepository {
   });
 
   @override
-  Future<Either<Failure, Result>> search(
-      {required String query,
-      required List<String> queryBy,
-      required int pageNumber,
-      FilterModel? filter}) async {
+  Future<Either<Failure, Result>> search({
+    required String query,
+    required List<String> queryBy,
+    required int pageNumber,
+    FilterModel? filter,
+    List<String>? facetBy,
+    int? maxFacetValues,
+  }) async {
     if (await networkInfo.isConnected) {
       try {
         final result = await remoteDataSource.search(
@@ -33,6 +36,8 @@ class RecipesRepositoryImpl implements RecipesRepository {
           queryBy: queryBy,
           pageNumber: pageNumber,
           filter: filter,
+          facetBy: facetBy,
+          maxFacetValues: maxFacetValues,
         );
 
         localDataSource.cacheResult(result);
