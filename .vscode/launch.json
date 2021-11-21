@@ -7,13 +7,21 @@
         {
             "name": "recipe",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--dart-define=apiKey=8hLCPSQTYcBuK29zY5q6Xhin7ONxHy99",
+                "--dart-define=hostAddress=https://qtg5aekc2iosjh93p.a1.typesense.net",
+            ]
         },
         {
             "name": "recipe (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define=apiKey=8hLCPSQTYcBuK29zY5q6Xhin7ONxHy99",
+                "--dart-define=hostAddress=https://qtg5aekc2iosjh93p.a1.typesense.net",
+            ]
         },
         {
             "name": "Flutter: Run all Tests",

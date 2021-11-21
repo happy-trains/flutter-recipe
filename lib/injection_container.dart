@@ -63,8 +63,10 @@ _initExternal() async {
   sl.registerLazySingleton(() => sharedPreferences);
 
   final config = Configuration(
-    String.fromEnvironment('API_KEY'),
-    nodes: {Node.withUri(Uri.parse(String.fromEnvironment('HOST_ADDRESS')))},
+    const String.fromEnvironment('apiKey'),
+    nodes: {
+      Node.withUri(Uri.parse(const String.fromEnvironment('hostAddress')))
+    },
     numRetries: 3,
     cachedSearchResultsTTL: Duration(seconds: 60),
   );
