@@ -16,18 +16,18 @@ void main() {
     usecase = GetIndexSize(mockRecipesRepository);
   });
 
-  final mockResult = 2231142;
+  final tIndexSize = 2231142;
 
   test(
     'should get total indexed documents from repository',
     () async {
       // arrange
       when(mockRecipesRepository.getIndexSize())
-          .thenAnswer((_) async => Right(mockResult));
+          .thenAnswer((_) async => Right(tIndexSize));
       // act
       final result = await usecase(NoParams());
       // assert
-      expect(result, Right(mockResult));
+      expect(result, Right(tIndexSize));
       verify(mockRecipesRepository.getIndexSize());
       verifyNoMoreInteractions(mockRecipesRepository);
     },
