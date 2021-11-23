@@ -35,7 +35,8 @@ workflows:
       - &unit_tests                 # Defined section; can be reused elsewhere using *unit_tests
         name: Unit tests
         script: |
-          echo "Running the unit tests"
+          echo "Running fpg"
+          flutter pub get
           mkdir -p test-results
           echo "Running build runner"
           flutter pub run build_runner build --delete-conflicting-outputs
