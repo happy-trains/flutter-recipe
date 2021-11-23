@@ -72,7 +72,7 @@ void main() {
         final searchParameters = {
           'q': 'Pizza',
           'query_by': 'title',
-          'page': 1,
+          'page': '1',
         };
         // act
         final map = remoteDataSource.generateSearchParameters(
