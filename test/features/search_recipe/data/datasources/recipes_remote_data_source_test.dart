@@ -25,10 +25,10 @@ void main() {
           'q': 'Pizza',
           'query_by': 'title',
           'facet_by': 'ingredient_names',
-          'max_facet_values': 1,
+          'max_facet_values': '1',
           'filter_by': 'ingredient_names:=[`salt`]',
-          'page': 1,
-          'per_page': 1
+          'page': '1',
+          'per_page': '1'
         };
         // act
         final map = remoteDataSource.generateSearchParameters(
@@ -43,6 +43,25 @@ void main() {
         );
         // assert
         expect(map, equals(searchParameters));
+      },
+    );
+
+    test(
+      'should return all values as String',
+      () async {
+        // act
+        final map = remoteDataSource.generateSearchParameters(
+          query: 'Pizza',
+          queryBy: ['title'],
+          pageNumber: 1,
+          filter: FilterModel(
+              fieldName: 'ingredient_names', filterValues: ['salt']),
+          facetBy: ['ingredient_names'],
+          maxFacetValues: 1,
+          perPage: 1,
+        );
+        // assert
+        map.forEach((key, value) => expect(value, isA<String>()));
       },
     );
 
