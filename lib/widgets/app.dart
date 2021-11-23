@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'home_page.dart';
 import '../constants.dart';
+import '../features/search_recipe/presentation/bloc/search_recipe_bloc.dart';
+import '../features/search_recipe/presentation/pages/search_recipes_page.dart';
+import '../injection_container.dart';
 
 class App extends StatelessWidget {
   @override
@@ -11,7 +14,10 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(title: Constants.appName),
+      home: BlocProvider(
+        create: (_) => sl<SearchRecipeBloc>(),
+        child: SearchRecipes(),
+      ),
     );
   }
 }
