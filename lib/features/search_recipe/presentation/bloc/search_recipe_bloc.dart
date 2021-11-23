@@ -33,12 +33,10 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
     on<GetIndexSize>(_GetIndexSizeHandler);
   }
 
-  _GetRecipesHandler(GetRecipes event, Emitter<SearchRecipeState> emit) {
+  _GetRecipesHandler(GetRecipes event, Emitter<SearchRecipeState> emit) async {
     final result = inputConverter.prunedQuery(event.query);
-    result.fold(
-      (failure) {
-        emit(Error(IVALID_INPUT_FAILURE_MESSAGE));
-      },
+    await result.fold(
+      (failure) async => emit(Error(IVALID_INPUT_FAILURE_MESSAGE)),
       (query) async {
         emit(LoadingRecipes());
 
@@ -50,9 +48,9 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
           ),
         );
 
-        result.fold(
-          (failure) => _failureHandler(emit, failure),
-          (result) => emit(
+        await result.fold(
+          (failure) async => _failureHandler(emit, failure),
+          (result) async => emit(
             LoadedRecipes(
               result.hits.map((h) => h.document).toList(),
             ),
