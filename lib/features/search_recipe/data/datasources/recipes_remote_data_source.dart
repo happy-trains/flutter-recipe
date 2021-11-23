@@ -41,7 +41,7 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     }
   }
 
-  Map<String, dynamic> generateSearchParameters({
+  Map<String, String> generateSearchParameters({
     required String query,
     required List<String> queryBy,
     required int pageNumber,
@@ -50,12 +50,12 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     int? maxFacetValues,
     int? perPage,
   }) {
-    final searchParameters = <String, dynamic>{};
+    final searchParameters = <String, String>{};
 
     searchParameters.addAll({
       'q': query,
       'query_by': queryBy.join(','),
-      'page': pageNumber,
+      'page': pageNumber.toString(),
     });
 
     if (filter != null) {
@@ -67,11 +67,11 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     }
 
     if (maxFacetValues != null) {
-      searchParameters.addAll({'max_facet_values': maxFacetValues});
+      searchParameters.addAll({'max_facet_values': maxFacetValues.toString()});
     }
 
     if (perPage != null) {
-      searchParameters.addAll({'per_page': perPage});
+      searchParameters.addAll({'per_page': perPage.toString()});
     }
 
     return searchParameters;
