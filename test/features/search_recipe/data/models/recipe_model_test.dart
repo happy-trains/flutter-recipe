@@ -87,6 +87,25 @@ void main() {
       },
     );
 
+    test(
+      'should have ingredients starting with upper case',
+      () async {
+        // arrange
+        final json = jsonDecode(fixture('recipe.json'));
+        // act
+        final result = RecipeModel.fromJson(json);
+        // assert
+        for (var ingredient in result.ingredientNames) {
+          expect(
+            ingredient[0],
+            equals(
+              ingredient[0].toUpperCase(),
+            ),
+          );
+        }
+      },
+    );
+
     group('toJson', () {
       test(
         'should return a json map containing the proper data',
