@@ -79,6 +79,14 @@ void main() {
       },
     );
 
+    test(
+      'should return authority from link',
+      () async {
+        // assert
+        expect(tRecipeModel.authority, equals('food.com'));
+      },
+    );
+
     group('toJson', () {
       test(
         'should return a json map containing the proper data',

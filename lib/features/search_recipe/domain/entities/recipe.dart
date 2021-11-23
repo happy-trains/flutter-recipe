@@ -19,6 +19,8 @@ class Recipe extends Equatable {
     required this.title,
   });
 
+  String get authority => Uri.parse(link).authority.replaceAll('www.', '');
+
   @override
   List<Object?> get props => [
         directions,
