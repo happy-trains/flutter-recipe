@@ -2,7 +2,7 @@ workflows:
 
   test:
     name: Test
-    instance_type: mac_mini
+    instance_type: linux
     max_build_duration: 10          # build duration in minutes (min 1, max 120)
     environment:
       flutter: stable
@@ -37,6 +37,8 @@ workflows:
         script: |
           echo "Running the unit tests"
           mkdir -p test-results
-          $FLUTTER_ROOT/bin/dart run build_runner build
+          echo "Running build runner"
+          flutter pub run build_runner build --delete-conflicting-outputs
+          echo "Running tests"
           flutter test --machine > test-results/flutter.json    
         test_report: test-results/flutter.json
