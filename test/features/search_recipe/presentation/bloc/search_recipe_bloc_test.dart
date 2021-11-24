@@ -262,7 +262,11 @@ void main() {
             bloc.stream,
             emitsInOrder([
               LoadingRecipes(),
-              LoadedRecipes([tRecipe])
+              LoadedRecipes(
+                [tRecipe],
+                resultCount: 7514,
+                searchTimeMS: 117,
+              ),
             ]));
         // act
         bloc.add(GetRecipes(tSearchQuery, tPageNumber));

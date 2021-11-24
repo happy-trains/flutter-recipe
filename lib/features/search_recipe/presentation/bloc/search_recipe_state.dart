@@ -20,8 +20,14 @@ class LoadingRecipes extends SearchRecipeState {
 
 class LoadedRecipes extends SearchRecipeState {
   final List<Recipe> recipes;
+  final int resultCount;
+  final int searchTimeMS;
 
-  LoadedRecipes(this.recipes) : super([recipes]);
+  LoadedRecipes(
+    this.recipes, {
+    required this.resultCount,
+    required this.searchTimeMS,
+  }) : super([recipes]);
 }
 
 class LoadingIndexSize extends SearchRecipeState {
