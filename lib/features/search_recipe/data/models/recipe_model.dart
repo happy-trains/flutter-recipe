@@ -21,7 +21,10 @@ class RecipeModel extends Recipe {
   factory RecipeModel.fromJson(Map<String, dynamic> json) => RecipeModel(
         directions: json['directions'].cast<String>(),
         id: json['id'],
-        ingredientNames: json['ingredient_names'].cast<String>(),
+        ingredientNames: (json['ingredient_names'] as List)
+            .cast<String>()
+            .map((i) => '${i[0].toUpperCase()}${i.substring(1)}')
+            .toList(),
         ingredientsWithMeasurements:
             json['ingredients_with_measurements'].cast<String>(),
         link: json['link'],
