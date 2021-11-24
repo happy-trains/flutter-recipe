@@ -53,6 +53,8 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
           (result) async => emit(
             LoadedRecipes(
               result.hits.map((h) => h.document).toList(),
+              resultCount: result.found,
+              searchTimeMS: result.searchTime.inMilliseconds,
             ),
           ),
         );
