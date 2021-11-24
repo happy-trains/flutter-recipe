@@ -68,18 +68,6 @@ void main() {
     );
 
     test(
-      'should return a model from json data',
-      () async {
-        // arrange
-        final json = jsonDecode(fixture('recipe.json'));
-        // act
-        final result = RecipeModel.fromJson(json);
-        // assert
-        expect(result, tRecipeModel);
-      },
-    );
-
-    test(
       'should return authority from link',
       () async {
         // assert
@@ -87,24 +75,43 @@ void main() {
       },
     );
 
-    test(
-      'should have ingredients starting with upper case',
-      () async {
-        // arrange
-        final json = jsonDecode(fixture('recipe.json'));
-        // act
-        final result = RecipeModel.fromJson(json);
-        // assert
-        for (var ingredient in result.ingredientNames) {
-          expect(
-            ingredient[0],
-            equals(
-              ingredient[0].toUpperCase(),
-            ),
-          );
-        }
-      },
-    );
+    group('fromJson', () {
+      test(
+        'should return a model from json data',
+        () async {
+          // arrange
+          final json = jsonDecode(fixture('recipe.json'));
+          // act
+          final result = RecipeModel.fromJson(json);
+          // assert
+          expect(result.directions, equals(tRecipeModel.directions));
+          expect(result.id, equals(tRecipeModel.id));
+          expect(result.ingredientsWithMeasurements,
+              equals(tRecipeModel.ingredientsWithMeasurements));
+          expect(result.link, equals(tRecipeModel.link));
+          expect(result.recipeId, equals(tRecipeModel.recipeId));
+          expect(result.title, equals(tRecipeModel.title));
+        },
+      );
+      test(
+        'should initialize ingredient names starting with an upper case letter',
+        () async {
+          // arrange
+          final json = jsonDecode(fixture('recipe.json'));
+          // act
+          final result = RecipeModel.fromJson(json);
+          // assert
+          for (var ingredient in result.ingredientNames) {
+            expect(
+              ingredient[0],
+              equals(
+                ingredient[0].toUpperCase(),
+              ),
+            );
+          }
+        },
+      );
+    });
 
     group('toJson', () {
       test(
