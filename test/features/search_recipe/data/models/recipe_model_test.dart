@@ -68,6 +68,24 @@ void main() {
     );
 
     test(
+      'should have a static empty field',
+      () async {
+        // assert
+        expect(
+            RecipeModel.empty,
+            equals(Recipe(
+              directions: [],
+              id: '',
+              ingredientNames: [],
+              ingredientsWithMeasurements: [],
+              link: '',
+              recipeId: 0,
+              title: '',
+            )));
+      },
+    );
+
+    test(
       'should return authority from link',
       () async {
         // assert

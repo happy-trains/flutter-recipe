@@ -31,6 +31,17 @@ class RecipeModel extends Recipe {
         recipeId: json['recipe_id'],
         title: json['title'],
       );
+
+  static const empty = Recipe(
+    directions: [],
+    id: '',
+    ingredientNames: [],
+    ingredientsWithMeasurements: [],
+    link: '',
+    recipeId: 0,
+    title: '',
+  );
+
   Map<String, dynamic> toJson() {
     return {
       'directions': directions,
