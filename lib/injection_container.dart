@@ -5,6 +5,7 @@ import 'package:typesense/typesense.dart';
 
 import 'core/network/network_info.dart';
 import 'core/utils/input_converter.dart';
+import 'core/utils/output_converter.dart';
 import 'features/search_recipe/data/datasources/recipes_local_data_source.dart';
 import 'features/search_recipe/data/datasources/recipes_remote_data_source.dart';
 import 'features/search_recipe/data/repositories/recipes_repository_impl.dart';
@@ -55,6 +56,7 @@ _initFeatures() {
 
 _initCore() {
   sl.registerLazySingleton(() => InputConverter());
+  sl.registerLazySingleton(() => OutputConverter());
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 }
 
