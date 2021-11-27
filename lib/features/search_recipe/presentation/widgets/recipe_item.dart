@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/entities/recipe.dart';
 
@@ -26,22 +27,30 @@ class RecipeCard extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              recipe.title,
-              style: TextStyle(
-                color: Color(0xffb71f3a),
-                fontSize: 18,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  recipe.title,
+                  style: TextStyle(
+                    color: Color(0xffb71f3a),
+                    fontSize: 18,
+                  ),
+                ),
               ),
-            ),
-            Text(
-              'from ${recipe.authority}',
-              style: TextStyle(
-                color: Colors.grey[400],
-                fontSize: 12,
+              TextButton(
+                onPressed: () => _launchURL(context, recipe.link),
+                child: Text(
+                  'from ${recipe.authority}',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
+                  ),
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 4.0),
             child: Text(
@@ -59,4 +68,18 @@ class RecipeCard extends StatelessWidget {
       ),
     );
   }
+
+  void _launchURL(BuildContext context, String url) async {
+    try {
+      if (!await launch(url)) {
+        _showUnableToLaunchSnackBar(context, url);
+      }
+    } catch (e) {
+      _showUnableToLaunchSnackBar(context, url);
+    }
+  }
+
+  void _showUnableToLaunchSnackBar(BuildContext context, String url) =>
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Could not launch \n$url')));
 }

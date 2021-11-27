@@ -1,47 +1,43 @@
 part of 'search_recipe_bloc.dart';
 
-@immutable
-abstract class SearchRecipeState extends Equatable {
-  final List<Object?> properties;
+enum SearchStatus { initial, loading, success, failure }
 
-  SearchRecipeState(this.properties);
+@immutable
+class SearchRecipeState extends Equatable {
+  final SearchStatus status;
+  final List<Recipe> recipes;
+  final int indexSize;
+  final Duration searchTime;
+  final int resultCount;
+  final String errorMessage;
+
+  const SearchRecipeState({
+    this.status = SearchStatus.initial,
+    this.recipes = const [RecipeModel.empty],
+    this.indexSize = -1,
+    this.searchTime = Duration.zero,
+    this.resultCount = -1,
+    this.errorMessage = '',
+  });
 
   @override
-  List<Object?> get props => properties;
-}
+  List<Object?> get props =>
+      [status, recipes, indexSize, searchTime, resultCount, errorMessage];
 
-class Empty extends SearchRecipeState {
-  Empty() : super([]);
-}
-
-class LoadingRecipes extends SearchRecipeState {
-  LoadingRecipes() : super([]);
-}
-
-class LoadedRecipes extends SearchRecipeState {
-  final List<Recipe> recipes;
-  final int resultCount;
-  final int searchTimeMS;
-
-  LoadedRecipes(
-    this.recipes, {
-    required this.resultCount,
-    required this.searchTimeMS,
-  }) : super([recipes]);
-}
-
-class LoadingIndexSize extends SearchRecipeState {
-  LoadingIndexSize() : super([]);
-}
-
-class LoadedIndexSize extends SearchRecipeState {
-  final int indexSize;
-
-  LoadedIndexSize(this.indexSize) : super([indexSize]);
-}
-
-class Error extends SearchRecipeState {
-  final String error;
-
-  Error(this.error) : super([error]);
+  SearchRecipeState copyWith({
+    SearchStatus? status,
+    List<Recipe>? recipes,
+    int? indexSize,
+    Duration? searchTime,
+    int? resultCount,
+    String? errorMessage,
+  }) =>
+      SearchRecipeState(
+        status: status ?? this.status,
+        recipes: recipes ?? this.recipes,
+        indexSize: indexSize ?? this.indexSize,
+        searchTime: searchTime ?? this.searchTime,
+        resultCount: resultCount ?? this.resultCount,
+        errorMessage: errorMessage ?? this.errorMessage,
+      );
 }

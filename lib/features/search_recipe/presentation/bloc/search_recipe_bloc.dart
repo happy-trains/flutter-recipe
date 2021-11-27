@@ -3,10 +3,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:recipe/core/error/failures.dart';
-import 'package:recipe/core/usecases/usecase.dart';
 
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/input_converter.dart';
+import '../../data/models/recipe_model.dart';
 import '../../domain/entities/recipe.dart';
 import '../../domain/usecases/get_index_size.dart' as use_case;
 import '../../domain/usecases/search_recipes.dart' as use_case;
@@ -28,7 +29,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
     required this.getIndexSizeUseCase,
     required this.searchRecipesUseCase,
     required this.inputConverter,
-  }) : super(Empty()) {
+  }) : super(SearchRecipeState()) {
     on<GetRecipes>(_GetRecipesHandler);
     on<GetIndexSize>(_GetIndexSizeHandler);
   }
@@ -36,9 +37,14 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
   _GetRecipesHandler(GetRecipes event, Emitter<SearchRecipeState> emit) async {
     final result = inputConverter.prunedQuery(event.query);
     await result.fold(
-      (failure) async => emit(Error(IVALID_INPUT_FAILURE_MESSAGE)),
+      (failure) async => emit(
+        state.copyWith(
+          status: SearchStatus.failure,
+          errorMessage: IVALID_INPUT_FAILURE_MESSAGE,
+        ),
+      ),
       (query) async {
-        emit(LoadingRecipes());
+        emit(state.copyWith(status: SearchStatus.loading));
 
         final result = await searchRecipesUseCase(
           use_case.Params(
@@ -49,12 +55,13 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
         );
 
         await result.fold(
-          (failure) async => _failureHandler(emit, failure),
+          (failure) async => _failureHandler(failure, emit, state),
           (result) async => emit(
-            LoadedRecipes(
-              result.hits.map((h) => h.document).toList(),
+            state.copyWith(
+              status: SearchStatus.success,
+              recipes: result.hits.map((h) => h.document).toList(),
               resultCount: result.found,
-              searchTimeMS: result.searchTime.inMilliseconds,
+              searchTime: result.searchTime,
             ),
           ),
         );
@@ -64,16 +71,27 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
 
   _GetIndexSizeHandler(
       GetIndexSize event, Emitter<SearchRecipeState> emit) async {
-    emit(LoadingIndexSize());
+    emit(state.copyWith(status: SearchStatus.loading));
 
     final result = await getIndexSizeUseCase(NoParams());
-    result.fold((failure) => _failureHandler(emit, failure),
-        (indexSize) => emit(LoadedIndexSize(indexSize)));
+    result.fold(
+      (failure) => _failureHandler(failure, emit, state),
+      (indexSize) => emit(
+        state.copyWith(
+          status: SearchStatus.success,
+          indexSize: indexSize,
+        ),
+      ),
+    );
   }
 }
 
-_failureHandler(Emitter<SearchRecipeState> emit, Failure failure) =>
-    emit(Error(failure.mapFailureToMessage()));
+_failureHandler(Failure failure, Emitter<SearchRecipeState> emit,
+        SearchRecipeState state) =>
+    emit(state.copyWith(
+      status: SearchStatus.failure,
+      errorMessage: failure.mapFailureToMessage(),
+    ));
 
 extension _Map on Failure {
   String mapFailureToMessage() {
