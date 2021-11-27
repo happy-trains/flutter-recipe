@@ -71,7 +71,9 @@ class _SearchBarState extends State<SearchBar>
               ),
             ),
             IconButton(
-              onPressed: () => _updateSize(),
+              onPressed: () => _textEditingController.text.isEmpty
+                  ? _updateSize()
+                  : _textEditingController.value = TextEditingValue.empty,
               icon: Icon(
                 widthDx > 0 ? Icons.cancel_outlined : Icons.search,
                 color: Theme.of(context).iconTheme.color,
