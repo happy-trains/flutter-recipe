@@ -40,7 +40,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
       (failure) async => emit(
         state.copyWith(
           status: SearchStatus.failure,
-          errorMessage: IVALID_INPUT_FAILURE_MESSAGE,
+          failureMessage: IVALID_INPUT_FAILURE_MESSAGE,
         ),
       ),
       (query) async {
@@ -90,7 +90,7 @@ _failureHandler(Failure failure, Emitter<SearchRecipeState> emit,
         SearchRecipeState state) =>
     emit(state.copyWith(
       status: SearchStatus.failure,
-      errorMessage: failure.mapFailureToMessage(),
+      failureMessage: failure.mapFailureToMessage(),
     ));
 
 extension _Map on Failure {

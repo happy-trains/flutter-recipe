@@ -181,10 +181,10 @@ void main() {
     );
 
     test(
-      'errorMessage should be empty',
+      'failureMessage should be empty',
       () async {
         // assert
-        expect(bloc.state.errorMessage, equals(''));
+        expect(bloc.state.failureMessage, equals(''));
       },
     );
   });
@@ -236,7 +236,7 @@ void main() {
               SearchRecipeState(status: SearchStatus.loading),
               SearchRecipeState(
                   status: SearchStatus.failure,
-                  errorMessage: SERVER_FAILURE_MESSAGE),
+                  failureMessage: SERVER_FAILURE_MESSAGE),
             ]));
         // act
         bloc.add(GetIndexSize());
@@ -256,7 +256,7 @@ void main() {
               SearchRecipeState(status: SearchStatus.loading),
               SearchRecipeState(
                   status: SearchStatus.failure,
-                  errorMessage: CACHE_FAILURE_MESSAGE),
+                  failureMessage: CACHE_FAILURE_MESSAGE),
             ]));
         // act
         bloc.add(GetIndexSize());
@@ -294,7 +294,7 @@ void main() {
           emitsInOrder([
             SearchRecipeState(
               status: SearchStatus.failure,
-              errorMessage: IVALID_INPUT_FAILURE_MESSAGE,
+              failureMessage: IVALID_INPUT_FAILURE_MESSAGE,
             )
           ]));
       // act
@@ -360,7 +360,7 @@ void main() {
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
-                errorMessage: SERVER_FAILURE_MESSAGE,
+                failureMessage: SERVER_FAILURE_MESSAGE,
               ),
             ]));
         // act
@@ -384,7 +384,7 @@ void main() {
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
-                errorMessage: CACHE_FAILURE_MESSAGE,
+                failureMessage: CACHE_FAILURE_MESSAGE,
               ),
             ]));
         // act

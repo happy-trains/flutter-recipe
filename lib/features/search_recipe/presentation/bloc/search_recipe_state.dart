@@ -9,7 +9,7 @@ class SearchRecipeState extends Equatable {
   final int indexSize;
   final Duration searchTime;
   final int resultCount;
-  final String errorMessage;
+  final String failureMessage;
 
   const SearchRecipeState({
     this.status = SearchStatus.initial,
@@ -17,12 +17,12 @@ class SearchRecipeState extends Equatable {
     this.indexSize = -1,
     this.searchTime = Duration.zero,
     this.resultCount = -1,
-    this.errorMessage = '',
+    this.failureMessage = '',
   });
 
   @override
   List<Object?> get props =>
-      [status, recipes, indexSize, searchTime, resultCount, errorMessage];
+      [status, recipes, indexSize, searchTime, resultCount, failureMessage];
 
   SearchRecipeState copyWith({
     SearchStatus? status,
@@ -30,7 +30,7 @@ class SearchRecipeState extends Equatable {
     int? indexSize,
     Duration? searchTime,
     int? resultCount,
-    String? errorMessage,
+    String? failureMessage,
   }) =>
       SearchRecipeState(
         status: status ?? this.status,
@@ -38,6 +38,6 @@ class SearchRecipeState extends Equatable {
         indexSize: indexSize ?? this.indexSize,
         searchTime: searchTime ?? this.searchTime,
         resultCount: resultCount ?? this.resultCount,
-        errorMessage: errorMessage ?? this.errorMessage,
+        failureMessage: failureMessage ?? this.failureMessage,
       );
 }
