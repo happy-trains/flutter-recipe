@@ -18,19 +18,26 @@ class RecipeModel extends Recipe {
             recipeId: recipeId,
             title: title);
 
-  factory RecipeModel.fromJson(Map<String, dynamic> json) => RecipeModel(
-        directions: json['directions'].cast<String>(),
-        id: json['id'],
-        ingredientNames: (json['ingredient_names'] as List)
-            .cast<String>()
-            .map((i) => '${i[0].toUpperCase()}${i.substring(1)}')
-            .toList(),
-        ingredientsWithMeasurements:
-            json['ingredients_with_measurements'].cast<String>(),
-        link: json['link'],
-        recipeId: json['recipe_id'],
-        title: json['title'],
-      );
+  factory RecipeModel.fromJson(Map<String, dynamic> json) {
+    var _link = json['link'];
+    if (!_link.startsWith('http')) {
+      _link = 'http://$_link';
+    }
+
+    return RecipeModel(
+      directions: json['directions'].cast<String>(),
+      id: json['id'],
+      ingredientNames: (json['ingredient_names'] as List)
+          .cast<String>()
+          .map((i) => '${i[0].toUpperCase()}${i.substring(1)}')
+          .toList(),
+      ingredientsWithMeasurements:
+          json['ingredients_with_measurements'].cast<String>(),
+      link: _link,
+      recipeId: json['recipe_id'],
+      title: json['title'],
+    );
+  }
 
   static const empty = Recipe(
     directions: [],

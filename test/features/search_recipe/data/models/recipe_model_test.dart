@@ -129,6 +129,19 @@ void main() {
           }
         },
       );
+      test(
+        'should append "http://" to the links, if missing',
+        () async {
+          // arrange
+          final json =
+              jsonDecode(fixture('recipe.json')) as Map<String, dynamic>;
+          json["link"] = 'www.food.com/recipe/pizza-355227';
+          // act
+          final result = RecipeModel.fromJson(json);
+          // assert
+          expect(result.link, equals(tRecipeModel.link));
+        },
+      );
     });
 
     group('toJson', () {
