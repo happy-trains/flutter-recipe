@@ -51,12 +51,15 @@ class RecipeCard extends StatelessWidget {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: Text(
-              recipe.ingredientNames.join(', '),
-              style: TextStyle(
-                fontSize: 13,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                recipe.ingredientNames.join(', '),
+                style: TextStyle(
+                  fontSize: 13,
+                ),
               ),
             ),
           ),
