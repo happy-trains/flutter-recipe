@@ -15,8 +15,10 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: BlocProvider(
-        create: (_) => sl<SearchRecipeBloc>(),
-        child: SearchRecipes(),
+        create: (_) => sl<SearchRecipeBloc>()..add(GetIndexSize()),
+        child: SearchRecipesPage(
+          outputConverter: sl(),
+        ),
       ),
     );
   }
