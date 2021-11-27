@@ -33,10 +33,7 @@ class RecipeCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   recipe.title,
-                  style: TextStyle(
-                    color: Color(0xffb71f3a),
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
               ),
               TextButton(

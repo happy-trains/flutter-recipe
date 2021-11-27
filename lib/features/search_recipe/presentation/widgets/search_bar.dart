@@ -58,27 +58,24 @@ class _SearchBarState extends State<SearchBar>
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
+              height: _searchBarHeight,
+              width: widthDx,
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(
+                left: 10,
+              ),
+              child: _child,
               decoration: BoxDecoration(
                 color: widthDx > 0 ? Colors.white : Colors.transparent,
-                border: Border.all(
-                    color: widthDx > 0 ? Colors.white : Colors.transparent),
                 borderRadius: BorderRadius.all(Radius.circular(3)),
-              ),
-              child: Container(
-                height: _searchBarHeight,
-                width: widthDx,
-                alignment: Alignment.center,
-                color: Colors.white,
-                padding: EdgeInsets.only(
-                  left: widthDx > 0 ? _maxWidth * 0.04 : 0,
-                  bottom: _searchBarHeight * 0.15,
-                ),
-                child: _child,
               ),
             ),
             IconButton(
               onPressed: () => _updateSize(),
-              icon: Icon(widthDx > 0 ? Icons.cancel_outlined : Icons.search),
+              icon: Icon(
+                widthDx > 0 ? Icons.cancel_outlined : Icons.search,
+                color: Theme.of(context).iconTheme.color,
+              ),
             ),
           ],
         );
@@ -89,9 +86,16 @@ class _SearchBarState extends State<SearchBar>
         onChanged: (query) => _bloc.add(
           GetRecipes(query, 1),
         ),
-        cursorColor: Colors.blue,
+        style: Theme.of(context).textTheme.headline2,
+        cursorColor: Theme.of(context).colorScheme.secondary,
+        cursorWidth: 1,
         decoration: InputDecoration(
           focusedBorder: InputBorder.none,
+          hintText: 'Type in a recipe title',
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+          ),
         ),
       ),
       curve: Curves.easeOutCubic,
