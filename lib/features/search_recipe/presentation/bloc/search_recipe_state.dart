@@ -7,6 +7,7 @@ class SearchRecipeState extends Equatable {
   final int page;
   final String query;
   final SearchStatus status;
+  final int perPage;
   final List<Recipe> recipes;
   final int indexSize;
   final Duration searchTime;
@@ -18,6 +19,7 @@ class SearchRecipeState extends Equatable {
     this.page = -1,
     this.query = '',
     this.status = SearchStatus.initial,
+    this.perPage = -1,
     this.recipes = const [RecipeModel.empty],
     this.indexSize = -1,
     this.searchTime = Duration.zero,
@@ -31,6 +33,7 @@ class SearchRecipeState extends Equatable {
         page,
         query,
         status,
+        perPage,
         recipes,
         indexSize,
         searchTime,
@@ -43,6 +46,7 @@ class SearchRecipeState extends Equatable {
     int? page,
     String? query,
     SearchStatus? status,
+    int? perPage,
     List<Recipe>? recipes,
     int? indexSize,
     Duration? searchTime,
@@ -54,6 +58,7 @@ class SearchRecipeState extends Equatable {
         page: page ?? this.page,
         query: query ?? this.query,
         status: status ?? this.status,
+        perPage: perPage ?? this.perPage,
         recipes: recipes ?? this.recipes,
         indexSize: indexSize ?? this.indexSize,
         searchTime: searchTime ?? this.searchTime,

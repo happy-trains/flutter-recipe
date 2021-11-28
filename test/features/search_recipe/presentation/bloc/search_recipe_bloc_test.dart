@@ -45,6 +45,7 @@ void main() {
   final tPrunedSearchQuery = 'Pizza';
   final tEmtpyResultSearchQuery = 'totallyEmptySearchQuery';
   final tPageNumber = 1;
+  final tPerPage = 1;
   final tQueryBy = ['title'];
   final tResultCount = 7514;
   final tEmptyResultCount = 0;
@@ -138,7 +139,7 @@ void main() {
     page: tPageNumber,
     requestParams: RequestParamsModel(
       collectionName: 'recipes_1630513346',
-      perPage: 1,
+      perPage: tPerPage,
       query: 'Pizza',
     ),
     searchTime: tSearchTime,
@@ -151,7 +152,7 @@ void main() {
     page: tPageNumber,
     requestParams: RequestParamsModel(
       collectionName: 'recipes_1630513346',
-      perPage: 1,
+      perPage: tPerPage,
       query: 'totallyEmptySearchQuery',
     ),
     searchTime: tSearchTime,
@@ -221,6 +222,13 @@ void main() {
       () async {
         // assert
         expect(bloc.state.canGetNextPage, isTrue);
+      },
+    );
+    test(
+      'perPage should be -1 ',
+      () async {
+        // assert
+        expect(bloc.state.perPage, equals(-1));
       },
     );
   });
@@ -310,7 +318,7 @@ void main() {
         setUpMockInputConverterSuccess();
         setUpMockSearchRecipesSuccess();
         // act
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
         await untilCalled(mockInputConverter.prunedQuery(any));
         // assert
         verify(mockInputConverter.prunedQuery(tSearchQuery));
@@ -323,7 +331,7 @@ void main() {
         setUpMockSearchRecipesSuccess();
         return bloc;
       },
-      act: (_) => bloc.add(GetRecipes(tSearchQuery)),
+      act: (_) => bloc.add(GetRecipes(tSearchQuery, tPerPage)),
       verify: (_) => expect(bloc.state.page, equals(tPageNumber)),
     );
     blocTest(
@@ -333,7 +341,7 @@ void main() {
         setUpMockSearchRecipesSuccess();
         return bloc;
       },
-      act: (_) => bloc.add(GetRecipes(tSearchQuery)),
+      act: (_) => bloc.add(GetRecipes(tSearchQuery, tPerPage)),
       verify: (_) => expect(bloc.state.query, equals(tPrunedSearchQuery)),
     );
     blocTest(
@@ -348,8 +356,18 @@ void main() {
 
         return bloc;
       },
-      act: (_) => bloc.add(GetRecipes(tEmtpyResultSearchQuery)),
+      act: (_) => bloc.add(GetRecipes(tEmtpyResultSearchQuery, tPerPage)),
       verify: (_) => expect(bloc.state.canGetNextPage, isFalse),
+    );
+    blocTest(
+      'should set perPage according to value passed',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) => bloc.add(GetRecipes(tEmtpyResultSearchQuery, tPerPage)),
+      verify: (_) => expect(bloc.state.perPage, equals(tPerPage)),
     );
 
     test(
@@ -368,7 +386,7 @@ void main() {
             )
           ]));
       // act
-      bloc.add(GetRecipes(tInvalidSearchQuery));
+      bloc.add(GetRecipes(tInvalidSearchQuery, tPerPage));
     });
     test(
       'should get data from SearchRecipes use case',
@@ -377,13 +395,14 @@ void main() {
         setUpMockInputConverterSuccess();
         setUpMockSearchRecipesSuccess();
         // act
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
         await untilCalled(mockSearchRecipes(any));
         // assert
         verify(mockSearchRecipes(use_case.Params(
           query: tPrunedSearchQuery,
           queryBy: tQueryBy,
           pageNumber: tPageNumber,
+          perPage: tPerPage,
         )));
       },
     );
@@ -401,6 +420,7 @@ void main() {
                 status: SearchStatus.loading,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
               SearchRecipeState(
                 status: SearchStatus.success,
@@ -409,10 +429,11 @@ void main() {
                 searchTime: tSearchTime,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
       },
     );
     test(
@@ -430,16 +451,18 @@ void main() {
                 status: SearchStatus.loading,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
                 failureMessage: SERVER_FAILURE_MESSAGE,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
       },
     );
     test(
@@ -457,16 +480,18 @@ void main() {
                 status: SearchStatus.loading,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
                 failureMessage: CACHE_FAILURE_MESSAGE,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
+                perPage: tPerPage,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
       },
     );
   });
@@ -480,7 +505,7 @@ void main() {
         return bloc;
       },
       act: (_) {
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
         bloc.add(GetNextPage());
       },
       verify: (_) {
@@ -488,36 +513,13 @@ void main() {
           query: tPrunedSearchQuery,
           queryBy: tQueryBy,
           pageNumber: tPageNumber,
+          perPage: tPerPage,
         )));
         verify(mockSearchRecipes(use_case.Params(
           query: tPrunedSearchQuery,
           queryBy: tQueryBy,
           pageNumber: tPageNumber + 1,
-        )));
-        expect(bloc.state.page, equals(2));
-      },
-    );
-    blocTest(
-      'should increment the page',
-      build: () {
-        setUpMockInputConverterSuccess();
-        setUpMockSearchRecipesSuccess();
-        return bloc;
-      },
-      act: (_) {
-        bloc.add(GetRecipes(tSearchQuery));
-        bloc.add(GetNextPage());
-      },
-      verify: (_) {
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber,
-        )));
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber + 1,
+          perPage: tPerPage,
         )));
         expect(bloc.state.page, equals(2));
       },
@@ -535,7 +537,7 @@ void main() {
         return bloc;
       },
       act: (_) {
-        bloc.add(GetRecipes(tEmtpyResultSearchQuery));
+        bloc.add(GetRecipes(tEmtpyResultSearchQuery, tPerPage));
         bloc.add(GetNextPage());
       },
       expect: () => [
@@ -543,6 +545,7 @@ void main() {
           status: SearchStatus.loading,
           page: tPageNumber,
           query: tEmtpyResultSearchQuery,
+          perPage: tPerPage,
         ),
         SearchRecipeState(
           status: SearchStatus.success,
@@ -552,6 +555,7 @@ void main() {
           page: tPageNumber,
           query: tEmtpyResultSearchQuery,
           canGetNextPage: false,
+          perPage: tPerPage,
         ),
       ],
       verify: (_) => expect(bloc.state.canGetNextPage, isFalse),
@@ -564,7 +568,7 @@ void main() {
         return bloc;
       },
       act: (_) {
-        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
         bloc.add(GetNextPage());
       },
       expect: () => [
@@ -572,6 +576,7 @@ void main() {
           status: SearchStatus.loading,
           page: tPageNumber,
           query: tPrunedSearchQuery,
+          perPage: tPerPage,
         ),
         SearchRecipeState(
           status: SearchStatus.success,
@@ -580,6 +585,7 @@ void main() {
           searchTime: tSearchTime,
           page: tPageNumber,
           query: tPrunedSearchQuery,
+          perPage: tPerPage,
         ),
         SearchRecipeState(
           status: SearchStatus.loading,
@@ -588,6 +594,7 @@ void main() {
           searchTime: tSearchTime,
           page: tPageNumber + 1,
           query: tPrunedSearchQuery,
+          perPage: tPerPage,
         ),
         SearchRecipeState(
           status: SearchStatus.success,
@@ -596,32 +603,37 @@ void main() {
           searchTime: tSearchTime,
           page: tPageNumber + 1,
           query: tPrunedSearchQuery,
+          perPage: tPerPage,
         ),
       ],
     );
+    blocTest(
+      'should use value of perPage to get next page',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) {
+        bloc.add(GetRecipes(tSearchQuery, tPerPage));
+        bloc.add(GetNextPage());
+      },
+      verify: (_) {
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber,
+          perPage: tPerPage,
+        )));
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber + 1,
+          perPage: tPerPage,
+        )));
+      },
+    );
   });
-
-  test(
-    'SearchRecipeState has a copyWith method',
-    () async {
-      // arrange
-      final initialState = SearchRecipeState(
-        indexSize: 123,
-        recipes: [],
-        resultCount: 123,
-        searchTime: Duration.zero,
-        status: SearchStatus.loading,
-      );
-      // act
-      final newState = initialState.copyWith(
-        searchTime: Duration(microseconds: 1),
-        status: SearchStatus.success,
-      );
-      // assert
-      expect(initialState.indexSize, equals(newState.indexSize));
-      expect(initialState.status == newState.status, isFalse);
-    },
-  );
 
   blocTest(
     'should persist the indexSize in subsequent emitted states',
@@ -635,7 +647,7 @@ void main() {
     act: (_) async {
       bloc.add(GetIndexSize());
       await Future.delayed(Duration.zero);
-      bloc.add(GetRecipes(tSearchQuery));
+      bloc.add(GetRecipes(tSearchQuery, tPerPage));
     },
     expect: () => [
       SearchRecipeState(
@@ -650,6 +662,7 @@ void main() {
         indexSize: tIndexSize,
         page: tPageNumber,
         query: tPrunedSearchQuery,
+        perPage: tPerPage,
       ),
       SearchRecipeState(
         status: SearchStatus.success,
@@ -659,6 +672,7 @@ void main() {
         searchTime: tSearchTime,
         page: tPageNumber,
         query: tPrunedSearchQuery,
+        perPage: tPerPage,
       ),
     ],
   );

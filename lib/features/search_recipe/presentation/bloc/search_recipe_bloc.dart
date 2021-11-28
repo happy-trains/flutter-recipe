@@ -47,14 +47,21 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
         ),
       ),
       (query) async {
-        emit(state.copyWith(
-            status: SearchStatus.loading, page: 1, query: query));
+        emit(
+          state.copyWith(
+            status: SearchStatus.loading,
+            page: 1,
+            query: query,
+            perPage: event.perPage,
+          ),
+        );
 
         final result = await searchRecipesUseCase(
           use_case.Params(
             query: query,
             queryBy: ['title'],
             pageNumber: 1,
+            perPage: event.perPage,
           ),
         );
 
@@ -89,6 +96,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
           query: state.query,
           queryBy: ['title'],
           pageNumber: state.page,
+          perPage: state.perPage,
         ),
       );
 
