@@ -58,7 +58,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
           ),
         );
 
-        await _searchRecipesResultHandler(result, emit);
+        _searchRecipesResultHandler(result, emit);
       },
     );
   }
@@ -91,22 +91,31 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
       ),
     );
 
-    await _searchRecipesResultHandler(result, emit);
+    _searchRecipesResultHandler(result, emit, appendResult: true);
   }
 
-  Future<void> _searchRecipesResultHandler(
-      Either<Failure, Result> result, Emitter<SearchRecipeState> emit) async {
-    return await result.fold(
-      (failure) async => _failureHandler(failure, emit, state),
-      (result) async => emit(
+  _searchRecipesResultHandler(
+      Either<Failure, Result> result, Emitter<SearchRecipeState> emit,
+      {bool appendResult = false}) {
+    return result.fold((failure) => _failureHandler(failure, emit, state),
+        (result) {
+      late final List<Recipe> _recipes;
+      if (appendResult) {
+        _recipes = List.from(state.recipes);
+        _recipes.addAll(result.hits.map((h) => h.document).toList());
+      } else {
+        _recipes = result.hits.map((h) => h.document).toList();
+      }
+
+      emit(
         state.copyWith(
           status: SearchStatus.success,
-          recipes: result.hits.map((h) => h.document).toList(),
+          recipes: _recipes,
           resultCount: result.found,
           searchTime: result.searchTime,
         ),
-      ),
-    );
+      );
+    });
   }
 
   _failureHandler(Failure failure, Emitter<SearchRecipeState> emit,
