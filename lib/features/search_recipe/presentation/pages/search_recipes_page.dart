@@ -7,11 +7,24 @@ import '../bloc/search_recipe_bloc.dart';
 import '../widgets/recipe_card.dart';
 import '../widgets/search_bar.dart';
 
-class SearchRecipesPage extends StatelessWidget {
+class SearchRecipesPage extends StatefulWidget {
   final OutputConverter outputConverter;
 
   SearchRecipesPage({Key? key, required this.outputConverter})
       : super(key: key);
+
+  @override
+  State<SearchRecipesPage> createState() => _SearchRecipesPageState();
+}
+
+class _SearchRecipesPageState extends State<SearchRecipesPage> {
+  late final ScrollController _recipesScrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _recipesScrollController = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +41,43 @@ class SearchRecipesPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SearchInfo(outputConverter: outputConverter),
-            SearchResults(),
+            SearchInfo(
+              outputConverter: widget.outputConverter,
+            ),
+            SearchResults(
+              controller: _recipesScrollController,
+            ),
           ],
         ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _recipesScrollController.dispose();
+  }
 }
 
 class SearchResults extends StatelessWidget {
+  final ScrollController controller;
   const SearchResults({
     Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    controller.addListener(() {
+      if (controller.offset == controller.position.maxScrollExtent) {
+        BlocProvider.of<SearchRecipeBloc>(context).add(GetNextPage());
+      }
+    });
+
     return Flexible(
       child: BlocBuilder<SearchRecipeBloc, SearchRecipeState>(
         builder: (context, state) {
-          if (state.status == SearchStatus.loading) {
-            return Center(child: const CircularProgressIndicator());
-          }
-
           if (state.status == SearchStatus.failure) {
             Future.delayed(Duration.zero).then(
               (_) => ScaffoldMessenger.of(context).showSnackBar(
@@ -61,27 +88,34 @@ class SearchResults extends StatelessWidget {
             );
           }
 
-          if (state.status == SearchStatus.success) {
-            final recipes = state.recipes;
+          final recipes = state.recipes;
 
-            if (state.resultCount < 0) {
-              return const SizedBox();
-            }
-
-            return ListView.separated(
-              itemBuilder: (_, index) => RecipeCard(
-                recipes[index],
-                isFirst: index == 0,
-                isLast: index == recipes.length - 1,
-              ),
-              separatorBuilder: (_, __) => SizedBox(
-                height: 5,
-              ),
-              itemCount: recipes.length,
-            );
-          } else {
+          if (state.resultCount < 0) {
             return const SizedBox();
           }
+
+          return Column(
+            children: [
+              if (state.resultCount > -1)
+                Flexible(
+                  child: ListView.separated(
+                    controller: controller,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (_, index) => RecipeCard(
+                      recipes[index],
+                      isFirst: index == 0,
+                      isLast: index == recipes.length - 1,
+                    ),
+                    separatorBuilder: (_, __) => SizedBox(
+                      height: 5,
+                    ),
+                    itemCount: recipes.length,
+                  ),
+                ),
+              if (state.status == SearchStatus.loading)
+                const Center(child: CircularProgressIndicator()),
+            ],
+          );
         },
       ),
     );
