@@ -42,10 +42,12 @@ void main() {
 
   final tIndexSize = 2231142;
   final tSearchQuery = 'A Pizza';
+  final tPrunedSearchQuery = 'Pizza';
+  final tEmtpyResultSearchQuery = 'totallyEmptySearchQuery';
   final tPageNumber = 1;
   final tQueryBy = ['title'];
-  final tPrunedSearchQuery = 'Pizza';
   final tResultCount = 7514;
+  final tEmptyResultCount = 0;
   final tSearchTime = Duration(milliseconds: 117);
 
   void setUpMockGetIndexSuccess() => when(mockGetIndexSize(any))
@@ -56,91 +58,104 @@ void main() {
           .thenReturn(Right(tPrunedSearchQuery));
 
   final tRecipe = RecipeModel(
-        directions: [
-          'Follow directions on hot roll mix, using 1 cup warm water and no egg; do not let rise.',
-          'On a greased baking sheet, roll dough out to 2 12-inch circles.',
-          'Pinch edge so that it stands up.',
-          'Brush dough with thin coating of oil.',
-          'In a skillet, break up sausage into small pieces and brown slowly, stirring often.',
-          'Drain fat.',
-          'Drain and slice tomatoes, reserving 1/2 cup liquid.',
-          'Place tomatoes on dough; sprinkle with salt and pepper, cover with mozzarella cheese, and drizzle each pizza with 1 Tblsp.',
-          'olive oil.',
-          'Sprinkle with sausage.',
-          'Combine tomato paste, reserved tomato juice, garlic, and herbs; spread over sausage.',
-          'Sprinkle with salt and pepper and parmesan cheese.',
-          'Drizzle with 1 Tblsp.',
-          'olive oil for each pizza.',
-          'Bake at 450* for 20 minutes or until crust is done.',
+    directions: [
+      'Follow directions on hot roll mix, using 1 cup warm water and no egg; do not let rise.',
+      'On a greased baking sheet, roll dough out to 2 12-inch circles.',
+      'Pinch edge so that it stands up.',
+      'Brush dough with thin coating of oil.',
+      'In a skillet, break up sausage into small pieces and brown slowly, stirring often.',
+      'Drain fat.',
+      'Drain and slice tomatoes, reserving 1/2 cup liquid.',
+      'Place tomatoes on dough; sprinkle with salt and pepper, cover with mozzarella cheese, and drizzle each pizza with 1 Tblsp.',
+      'olive oil.',
+      'Sprinkle with sausage.',
+      'Combine tomato paste, reserved tomato juice, garlic, and herbs; spread over sausage.',
+      'Sprinkle with salt and pepper and parmesan cheese.',
+      'Drizzle with 1 Tblsp.',
+      'olive oil for each pizza.',
+      'Bake at 450* for 20 minutes or until crust is done.',
+    ],
+    id: '2230607',
+    ingredientNames: [
+      'Italian sausage',
+      'tomato',
+      'salt',
+      'ground black pepper',
+      'mozzarella cheese',
+      'olive oil',
+      'tomato paste',
+      'garlic',
+      'oregano',
+      'basil',
+      'parmesan cheese',
+    ],
+    ingredientsWithMeasurements: [
+      '1 (16 ounce) package hot roll mix',
+      '1 lb Italian sausage',
+      '1 lb canned tomato (2 cups)',
+      'salt, to taste',
+      'fresh coarse ground black pepper, to taste',
+      '6 ounces mozzarella cheese, grated',
+      '6 tablespoons olive oil',
+      '1 (6 ounce) can tomato paste (2/3 cup)',
+      '2 garlic cloves, minced',
+      '1 tablespoon oregano, crushed',
+      '1 tablespoon basil, crushed',
+      '14 cup grated parmesan cheese',
+    ],
+    link: 'http://www.food.com/recipe/pizza-355227',
+    recipeId: 2230607,
+    title: 'Pizza',
+  );
+  final tResult = ResultModel(
+    facetCounts: [
+      FacetCountModel(
+        facets: [
+          FacetModel(
+            documentCount: 8277,
+            highlighted: 'salt',
+            value: 'salt',
+          ),
         ],
-        id: '2230607',
-        ingredientNames: [
-          'Italian sausage',
-          'tomato',
-          'salt',
-          'ground black pepper',
-          'mozzarella cheese',
-          'olive oil',
-          'tomato paste',
-          'garlic',
-          'oregano',
-          'basil',
-          'parmesan cheese',
-        ],
-        ingredientsWithMeasurements: [
-          '1 (16 ounce) package hot roll mix',
-          '1 lb Italian sausage',
-          '1 lb canned tomato (2 cups)',
-          'salt, to taste',
-          'fresh coarse ground black pepper, to taste',
-          '6 ounces mozzarella cheese, grated',
-          '6 tablespoons olive oil',
-          '1 (6 ounce) can tomato paste (2/3 cup)',
-          '2 garlic cloves, minced',
-          '1 tablespoon oregano, crushed',
-          '1 tablespoon basil, crushed',
-          '14 cup grated parmesan cheese',
-        ],
-        link: 'http://www.food.com/recipe/pizza-355227',
-        recipeId: 2230607,
-        title: 'Pizza',
+        fieldName: 'ingredient_names',
       ),
-      tResult = ResultModel(
-        facetCounts: [
-          FacetCountModel(
-            facets: [
-              FacetModel(
-                documentCount: 8277,
-                highlighted: 'salt',
-                value: 'salt',
-              ),
-            ],
-            fieldName: 'ingredient_names',
+    ],
+    found: tResultCount,
+    hits: [
+      HitModel(
+        document: tRecipe,
+        highlights: [
+          HighlightModel(
+            field: 'title',
+            matchedTokens: ['Pizza'],
+            snippet: '<mark>Pizza</mark>',
           ),
         ],
-        found: 7514,
-        hits: [
-          HitModel(
-            document: tRecipe,
-            highlights: [
-              HighlightModel(
-                field: 'title',
-                matchedTokens: ['Pizza'],
-                snippet: '<mark>Pizza</mark>',
-              ),
-            ],
-            textMatch: 33514500,
-          ),
-        ],
-        outOf: 2231142,
-        page: 1,
-        requestParams: RequestParamsModel(
-          collectionName: 'recipes_1630513346',
-          perPage: 1,
-          query: 'Pizza',
-        ),
-        searchTime: tSearchTime,
-      );
+        textMatch: 33514500,
+      ),
+    ],
+    outOf: 2231142,
+    page: tPageNumber,
+    requestParams: RequestParamsModel(
+      collectionName: 'recipes_1630513346',
+      perPage: 1,
+      query: 'Pizza',
+    ),
+    searchTime: tSearchTime,
+  );
+  final tEmptyResult = ResultModel(
+    facetCounts: [],
+    found: tEmptyResultCount,
+    hits: [],
+    outOf: 2231142,
+    page: tPageNumber,
+    requestParams: RequestParamsModel(
+      collectionName: 'recipes_1630513346',
+      perPage: 1,
+      query: 'totallyEmptySearchQuery',
+    ),
+    searchTime: tSearchTime,
+  );
   void setUpMockSearchRecipesSuccess() => when(mockSearchRecipes(any))
       .thenAnswer((_) => Future.value(Right(tResult)));
 
@@ -199,6 +214,13 @@ void main() {
       () async {
         // assert
         expect(bloc.state.query, equals(''));
+      },
+    );
+    test(
+      'canGetNextPage should be true',
+      () async {
+        // assert
+        expect(bloc.state.canGetNextPage, isTrue);
       },
     );
   });
@@ -314,6 +336,22 @@ void main() {
       act: (_) => bloc.add(GetRecipes(tSearchQuery)),
       verify: (_) => expect(bloc.state.query, equals(tPrunedSearchQuery)),
     );
+    blocTest(
+      'should set canGetNextPage to false in case of no hits',
+      build: () {
+        when(mockInputConverter.prunedQuery(any))
+            .thenReturn(Right(tEmtpyResultSearchQuery));
+        when(mockSearchRecipes(any))
+            .thenAnswer((_) => Future.value(Right(tEmptyResult)));
+
+        expect(bloc.state.canGetNextPage, isTrue);
+
+        return bloc;
+      },
+      act: (_) => bloc.add(GetRecipes(tEmtpyResultSearchQuery)),
+      verify: (_) => expect(bloc.state.canGetNextPage, isFalse),
+    );
+
     test(
         'should emit SearchRecipeState with status [failure] when input is invalid',
         () async {
@@ -458,6 +496,65 @@ void main() {
         )));
         expect(bloc.state.page, equals(2));
       },
+    );
+    blocTest(
+      'should increment the page',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) {
+        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetNextPage());
+      },
+      verify: (_) {
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber,
+        )));
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber + 1,
+        )));
+        expect(bloc.state.page, equals(2));
+      },
+    );
+    blocTest(
+      'should only increment the page when canGetNextPage is true',
+      build: () {
+        when(mockInputConverter.prunedQuery(any))
+            .thenReturn(Right(tEmtpyResultSearchQuery));
+        when(mockSearchRecipes(any))
+            .thenAnswer((_) => Future.value(Right(tEmptyResult)));
+
+        expect(bloc.state.canGetNextPage, isTrue);
+
+        return bloc;
+      },
+      act: (_) {
+        bloc.add(GetRecipes(tEmtpyResultSearchQuery));
+        bloc.add(GetNextPage());
+      },
+      expect: () => [
+        SearchRecipeState(
+          status: SearchStatus.loading,
+          page: tPageNumber,
+          query: tEmtpyResultSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.success,
+          recipes: [],
+          resultCount: tEmptyResultCount,
+          searchTime: tSearchTime,
+          page: tPageNumber,
+          query: tEmtpyResultSearchQuery,
+          canGetNextPage: false,
+        ),
+      ],
+      verify: (_) => expect(bloc.state.canGetNextPage, isFalse),
     );
     blocTest(
       'should append the result to recipes',
