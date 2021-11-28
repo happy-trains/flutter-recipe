@@ -1,4 +1,4 @@
-# Recipe <img src="assets/recipe-transparent.png" alt="logo" width="40" height="40"> [![Codemagic build status][hello-world]][latest-build]
+# Recipe <img src="assets/images/recipe-transparent.png" alt="logo" width="40" height="40"> [![Codemagic build status][hello-world]][latest-build]
 A multi-platform app that targets mobile, web, and desktop using the Flutter framework.
 
 # Goals
