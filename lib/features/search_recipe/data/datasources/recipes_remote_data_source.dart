@@ -88,18 +88,17 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     int? perPage,
   }) async {
     try {
-      final result = await typesenseClient
-          .collection('r')
-          .documents
-          .search(generateSearchParameters(
-            query: query,
-            queryBy: queryBy,
-            pageNumber: pageNumber,
-            filter: filter,
-            facetBy: facetBy,
-            maxFacetValues: maxFacetValues,
-            perPage: perPage,
-          ));
+      final result = await typesenseClient.collection('r').documents.search(
+            generateSearchParameters(
+              query: query,
+              queryBy: queryBy,
+              pageNumber: pageNumber,
+              filter: filter,
+              facetBy: facetBy,
+              maxFacetValues: maxFacetValues,
+              perPage: perPage,
+            ),
+          );
 
       return ResultModel.fromJson(result);
     } on TypesenseException catch (_) {

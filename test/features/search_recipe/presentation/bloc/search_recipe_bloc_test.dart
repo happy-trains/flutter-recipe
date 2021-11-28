@@ -472,6 +472,19 @@ void main() {
           query: tPrunedSearchQuery,
         ),
       ],
+      verify: (_) {
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber,
+        )));
+        verify(mockSearchRecipes(use_case.Params(
+          query: tPrunedSearchQuery,
+          queryBy: tQueryBy,
+          pageNumber: tPageNumber + 1,
+        )));
+        expect(bloc.state.page, equals(2));
+      },
     );
   });
 
