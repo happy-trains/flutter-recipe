@@ -41,10 +41,16 @@ void main() {
   });
 
   final tIndexSize = 2231142;
+  final tSearchQuery = 'A Pizza';
+  final tPageNumber = 1;
+  final tQueryBy = ['title'];
+  final tPrunedSearchQuery = 'Pizza';
+  final tResultCount = 7514;
+  final tSearchTime = Duration(milliseconds: 117);
+
   void setUpMockGetIndexSuccess() => when(mockGetIndexSize(any))
       .thenAnswer((_) => Future.value(Right(tIndexSize)));
 
-  final tPrunedSearchQuery = 'Pizza';
   void setUpMockInputConverterSuccess() =>
       when(mockInputConverter.prunedQuery(any))
           .thenReturn(Right(tPrunedSearchQuery));
@@ -133,9 +139,8 @@ void main() {
           perPage: 1,
           query: 'Pizza',
         ),
-        searchTime: Duration(milliseconds: 117),
+        searchTime: tSearchTime,
       );
-  final tSearchQuery = 'A Pizza', tPageNumber = 1, tQueryBy = ['title'];
   void setUpMockSearchRecipesSuccess() => when(mockSearchRecipes(any))
       .thenAnswer((_) => Future.value(Right(tResult)));
 
@@ -362,8 +367,8 @@ void main() {
               SearchRecipeState(
                 status: SearchStatus.success,
                 recipes: [tRecipe],
-                resultCount: 7514,
-                searchTime: Duration(milliseconds: 117),
+                resultCount: tResultCount,
+                searchTime: tSearchTime,
                 page: tPageNumber,
                 query: tPrunedSearchQuery,
               ),
@@ -436,42 +441,10 @@ void main() {
         setUpMockSearchRecipesSuccess();
         return bloc;
       },
-      act: (_) async {
-        // await Future.delayed(Duration.zero);
+      act: (_) {
         bloc.add(GetRecipes(tSearchQuery));
         bloc.add(GetNextPage());
       },
-      expect: () => [
-        SearchRecipeState(
-          status: SearchStatus.loading,
-          page: tPageNumber,
-          query: tPrunedSearchQuery,
-        ),
-        SearchRecipeState(
-          status: SearchStatus.success,
-          recipes: [tRecipe],
-          resultCount: 7514,
-          searchTime: Duration(milliseconds: 117),
-          page: tPageNumber,
-          query: tPrunedSearchQuery,
-        ),
-        SearchRecipeState(
-          status: SearchStatus.loading,
-          recipes: [tRecipe],
-          resultCount: 7514,
-          searchTime: Duration(milliseconds: 117),
-          page: tPageNumber + 1,
-          query: tPrunedSearchQuery,
-        ),
-        SearchRecipeState(
-          status: SearchStatus.success,
-          recipes: [tRecipe],
-          resultCount: 7514,
-          searchTime: Duration(milliseconds: 117),
-          page: tPageNumber + 1,
-          query: tPrunedSearchQuery,
-        ),
-      ],
       verify: (_) {
         verify(mockSearchRecipes(use_case.Params(
           query: tPrunedSearchQuery,
@@ -485,6 +458,49 @@ void main() {
         )));
         expect(bloc.state.page, equals(2));
       },
+    );
+    blocTest(
+      'should append the result to recipes',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) {
+        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetNextPage());
+      },
+      expect: () => [
+        SearchRecipeState(
+          status: SearchStatus.loading,
+          page: tPageNumber,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.success,
+          recipes: [tRecipe],
+          resultCount: tResultCount,
+          searchTime: tSearchTime,
+          page: tPageNumber,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.loading,
+          recipes: [tRecipe],
+          resultCount: tResultCount,
+          searchTime: tSearchTime,
+          page: tPageNumber + 1,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.success,
+          recipes: [tRecipe, tRecipe],
+          resultCount: tResultCount,
+          searchTime: tSearchTime,
+          page: tPageNumber + 1,
+          query: tPrunedSearchQuery,
+        ),
+      ],
     );
   });
 
@@ -542,8 +558,8 @@ void main() {
         status: SearchStatus.success,
         indexSize: tIndexSize,
         recipes: [tRecipe],
-        resultCount: 7514,
-        searchTime: Duration(milliseconds: 117),
+        resultCount: tResultCount,
+        searchTime: tSearchTime,
         page: tPageNumber,
         query: tPrunedSearchQuery,
       ),
