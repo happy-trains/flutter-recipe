@@ -87,7 +87,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
       use_case.Params(
         query: state.query,
         queryBy: ['title'],
-        pageNumber: state.page + 1,
+        pageNumber: state.page,
       ),
     );
 
