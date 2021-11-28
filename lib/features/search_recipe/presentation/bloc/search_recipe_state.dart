@@ -4,6 +4,8 @@ enum SearchStatus { initial, loading, success, failure }
 
 @immutable
 class SearchRecipeState extends Equatable {
+  final int page;
+  final String query;
   final SearchStatus status;
   final List<Recipe> recipes;
   final int indexSize;
@@ -12,6 +14,8 @@ class SearchRecipeState extends Equatable {
   final String failureMessage;
 
   const SearchRecipeState({
+    this.page = -1,
+    this.query = '',
     this.status = SearchStatus.initial,
     this.recipes = const [RecipeModel.empty],
     this.indexSize = -1,
@@ -21,10 +25,20 @@ class SearchRecipeState extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [status, recipes, indexSize, searchTime, resultCount, failureMessage];
+  List<Object?> get props => [
+        page,
+        query,
+        status,
+        recipes,
+        indexSize,
+        searchTime,
+        resultCount,
+        failureMessage,
+      ];
 
   SearchRecipeState copyWith({
+    int? page,
+    String? query,
     SearchStatus? status,
     List<Recipe>? recipes,
     int? indexSize,
@@ -33,6 +47,8 @@ class SearchRecipeState extends Equatable {
     String? failureMessage,
   }) =>
       SearchRecipeState(
+        page: page ?? this.page,
+        query: query ?? this.query,
         status: status ?? this.status,
         recipes: recipes ?? this.recipes,
         indexSize: indexSize ?? this.indexSize,

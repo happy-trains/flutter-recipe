@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -11,6 +12,7 @@ import '../../data/models/recipe_model.dart';
 import '../../domain/entities/recipe.dart';
 import '../../domain/usecases/get_index_size.dart' as use_case;
 import '../../domain/usecases/search_recipes.dart' as use_case;
+import 'package:recipe/features/search_recipe/domain/entities/result.dart';
 
 part 'search_recipe_event.dart';
 part 'search_recipe_state.dart';
@@ -32,6 +34,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
   }) : super(SearchRecipeState()) {
     on<GetRecipes>(_GetRecipesHandler);
     on<GetIndexSize>(_GetIndexSizeHandler);
+    on<GetNextPage>(_GetNextPageHandler);
   }
 
   _GetRecipesHandler(GetRecipes event, Emitter<SearchRecipeState> emit) async {
@@ -44,7 +47,8 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
         ),
       ),
       (query) async {
-        emit(state.copyWith(status: SearchStatus.loading));
+        emit(state.copyWith(
+            status: SearchStatus.loading, page: 1, query: query));
 
         final result = await searchRecipesUseCase(
           use_case.Params(
@@ -54,17 +58,7 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
           ),
         );
 
-        await result.fold(
-          (failure) async => _failureHandler(failure, emit, state),
-          (result) async => emit(
-            state.copyWith(
-              status: SearchStatus.success,
-              recipes: result.hits.map((h) => h.document).toList(),
-              resultCount: result.found,
-              searchTime: result.searchTime,
-            ),
-          ),
-        );
+        await _searchRecipesResultHandler(result, emit);
       },
     );
   }
@@ -84,14 +78,46 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
       ),
     );
   }
-}
 
-_failureHandler(Failure failure, Emitter<SearchRecipeState> emit,
-        SearchRecipeState state) =>
-    emit(state.copyWith(
-      status: SearchStatus.failure,
-      failureMessage: failure.mapFailureToMessage(),
-    ));
+  _GetNextPageHandler(
+      GetNextPage event, Emitter<SearchRecipeState> emit) async {
+    emit(state.copyWith(status: SearchStatus.loading, page: state.page + 1));
+
+    final result = await searchRecipesUseCase(
+      use_case.Params(
+        query: state.query,
+        queryBy: ['title'],
+        pageNumber: state.page + 1,
+      ),
+    );
+
+    await _searchRecipesResultHandler(result, emit);
+  }
+
+  Future<void> _searchRecipesResultHandler(
+      Either<Failure, Result> result, Emitter<SearchRecipeState> emit) async {
+    return await result.fold(
+      (failure) async => _failureHandler(failure, emit, state),
+      (result) async => emit(
+        state.copyWith(
+          status: SearchStatus.success,
+          recipes: result.hits.map((h) => h.document).toList(),
+          resultCount: result.found,
+          searchTime: result.searchTime,
+        ),
+      ),
+    );
+  }
+
+  _failureHandler(Failure failure, Emitter<SearchRecipeState> emit,
+          SearchRecipeState state) =>
+      emit(
+        state.copyWith(
+          status: SearchStatus.failure,
+          failureMessage: failure.mapFailureToMessage(),
+        ),
+      );
+}
 
 extension _Map on Failure {
   String mapFailureToMessage() {

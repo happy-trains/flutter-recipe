@@ -86,7 +86,7 @@ class _SearchBarState extends State<SearchBar>
         focusNode: _focusNode,
         controller: _textEditingController,
         onChanged: (query) => _bloc.add(
-          GetRecipes(query, 1),
+          GetRecipes(query),
         ),
         style: Theme.of(context).textTheme.headline2,
         cursorColor: Theme.of(context).colorScheme.secondary,

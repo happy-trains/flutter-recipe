@@ -5,15 +5,19 @@ abstract class SearchRecipeEvent extends Equatable {}
 
 class GetRecipes extends SearchRecipeEvent {
   final String query;
-  final int pageNumber;
 
-  GetRecipes(this.query, this.pageNumber);
+  GetRecipes(this.query);
 
   @override
   List<Object?> get props => [query];
 }
 
 class GetIndexSize extends SearchRecipeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetNextPage extends SearchRecipeEvent {
   @override
   List<Object?> get props => [];
 }

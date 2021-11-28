@@ -135,7 +135,7 @@ void main() {
         ),
         searchTime: Duration(milliseconds: 117),
       );
-  final tSearchQuery = 'A Pizza', tPageNumber = 1;
+  final tSearchQuery = 'A Pizza', tPageNumber = 1, tQueryBy = ['title'];
   void setUpMockSearchRecipesSuccess() => when(mockSearchRecipes(any))
       .thenAnswer((_) => Future.value(Right(tResult)));
 
@@ -147,7 +147,6 @@ void main() {
         expect(bloc.state.status, equals(SearchStatus.initial));
       },
     );
-
     test(
       'recipes should be a list containing Recipe.empty',
       () async {
@@ -155,7 +154,6 @@ void main() {
         expect(bloc.state.recipes, equals([RecipeModel.empty]));
       },
     );
-
     test(
       'indexSize should be -1',
       () async {
@@ -163,7 +161,6 @@ void main() {
         expect(bloc.state.indexSize, equals(-1));
       },
     );
-
     test(
       'searchTime should be Duration.zero',
       () async {
@@ -171,7 +168,6 @@ void main() {
         expect(bloc.state.searchTime, equals(Duration.zero));
       },
     );
-
     test(
       'resultCount should be -1',
       () async {
@@ -179,12 +175,25 @@ void main() {
         expect(bloc.state.resultCount, equals(-1));
       },
     );
-
     test(
       'failureMessage should be empty',
       () async {
         // assert
         expect(bloc.state.failureMessage, equals(''));
+      },
+    );
+    test(
+      'page should be -1',
+      () async {
+        // assert
+        expect(bloc.state.page, equals(-1));
+      },
+    );
+    test(
+      'query should be empty',
+      () async {
+        // assert
+        expect(bloc.state.query, equals(''));
       },
     );
   });
@@ -266,7 +275,6 @@ void main() {
 
   group('GetRecipes', () {
     final tInvalidSearchQuery = 'Not ok?';
-    final tQueryBy = ['title'];
 
     test(
       'should call InputConverter to prune the query',
@@ -275,13 +283,32 @@ void main() {
         setUpMockInputConverterSuccess();
         setUpMockSearchRecipesSuccess();
         // act
-        bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+        bloc.add(GetRecipes(tSearchQuery));
         await untilCalled(mockInputConverter.prunedQuery(any));
         // assert
         verify(mockInputConverter.prunedQuery(tSearchQuery));
       },
     );
-
+    blocTest(
+      'should set page to 1',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) => bloc.add(GetRecipes(tSearchQuery)),
+      verify: (_) => expect(bloc.state.page, equals(tPageNumber)),
+    );
+    blocTest(
+      'should set query to pruned search query',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) => bloc.add(GetRecipes(tSearchQuery)),
+      verify: (_) => expect(bloc.state.query, equals(tPrunedSearchQuery)),
+    );
     test(
         'should emit SearchRecipeState with status [failure] when input is invalid',
         () async {
@@ -298,9 +325,8 @@ void main() {
             )
           ]));
       // act
-      bloc.add(GetRecipes(tInvalidSearchQuery, tPageNumber));
+      bloc.add(GetRecipes(tInvalidSearchQuery));
     });
-
     test(
       'should get data from SearchRecipes use case',
       () async {
@@ -308,7 +334,7 @@ void main() {
         setUpMockInputConverterSuccess();
         setUpMockSearchRecipesSuccess();
         // act
-        bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+        bloc.add(GetRecipes(tSearchQuery));
         await untilCalled(mockSearchRecipes(any));
         // assert
         verify(mockSearchRecipes(use_case.Params(
@@ -318,7 +344,6 @@ void main() {
         )));
       },
     );
-
     test(
       'should emit SearchRecipeState with status [loading, success] when data is retrieved successfully',
       () async {
@@ -331,19 +356,22 @@ void main() {
             emitsInOrder([
               SearchRecipeState(
                 status: SearchStatus.loading,
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
               SearchRecipeState(
                 status: SearchStatus.success,
                 recipes: [tRecipe],
                 resultCount: 7514,
                 searchTime: Duration(milliseconds: 117),
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+        bloc.add(GetRecipes(tSearchQuery));
       },
     );
-
     test(
       'should emit SearchRecipeState with status [loading, failure] when data retrieval is unsuccessful',
       () async {
@@ -357,17 +385,20 @@ void main() {
             emitsInOrder([
               SearchRecipeState(
                 status: SearchStatus.loading,
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
                 failureMessage: SERVER_FAILURE_MESSAGE,
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+        bloc.add(GetRecipes(tSearchQuery));
       },
     );
-
     test(
       'should emit SearchRecipeState with status [loading, failure] and a proper message for failure',
       () async {
@@ -381,15 +412,66 @@ void main() {
             emitsInOrder([
               SearchRecipeState(
                 status: SearchStatus.loading,
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
               SearchRecipeState(
                 status: SearchStatus.failure,
                 failureMessage: CACHE_FAILURE_MESSAGE,
+                page: tPageNumber,
+                query: tPrunedSearchQuery,
               ),
             ]));
         // act
-        bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+        bloc.add(GetRecipes(tSearchQuery));
       },
+    );
+  });
+
+  group('GetNextPage', () {
+    blocTest(
+      'should increment the page',
+      build: () {
+        setUpMockInputConverterSuccess();
+        setUpMockSearchRecipesSuccess();
+        return bloc;
+      },
+      act: (_) async {
+        // await Future.delayed(Duration.zero);
+        bloc.add(GetRecipes(tSearchQuery));
+        bloc.add(GetNextPage());
+      },
+      expect: () => [
+        SearchRecipeState(
+          status: SearchStatus.loading,
+          page: tPageNumber,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.success,
+          recipes: [tRecipe],
+          resultCount: 7514,
+          searchTime: Duration(milliseconds: 117),
+          page: tPageNumber,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.loading,
+          recipes: [tRecipe],
+          resultCount: 7514,
+          searchTime: Duration(milliseconds: 117),
+          page: tPageNumber + 1,
+          query: tPrunedSearchQuery,
+        ),
+        SearchRecipeState(
+          status: SearchStatus.success,
+          recipes: [tRecipe],
+          resultCount: 7514,
+          searchTime: Duration(milliseconds: 117),
+          page: tPageNumber + 1,
+          query: tPrunedSearchQuery,
+        ),
+      ],
     );
   });
 
@@ -424,10 +506,10 @@ void main() {
 
       return bloc;
     },
-    act: (SearchRecipeBloc bloc) async {
+    act: (_) async {
       bloc.add(GetIndexSize());
       await Future.delayed(Duration.zero);
-      bloc.add(GetRecipes(tSearchQuery, tPageNumber));
+      bloc.add(GetRecipes(tSearchQuery));
     },
     expect: () => [
       SearchRecipeState(
@@ -440,6 +522,8 @@ void main() {
       SearchRecipeState(
         status: SearchStatus.loading,
         indexSize: tIndexSize,
+        page: tPageNumber,
+        query: tPrunedSearchQuery,
       ),
       SearchRecipeState(
         status: SearchStatus.success,
@@ -447,6 +531,8 @@ void main() {
         recipes: [tRecipe],
         resultCount: 7514,
         searchTime: Duration(milliseconds: 117),
+        page: tPageNumber,
+        query: tPrunedSearchQuery,
       ),
     ],
   );
