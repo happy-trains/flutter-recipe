@@ -81,17 +81,19 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
 
   _GetNextPageHandler(
       GetNextPage event, Emitter<SearchRecipeState> emit) async {
-    emit(state.copyWith(status: SearchStatus.loading, page: state.page + 1));
+    if (state.canGetNextPage) {
+      emit(state.copyWith(status: SearchStatus.loading, page: state.page + 1));
 
-    final result = await searchRecipesUseCase(
-      use_case.Params(
-        query: state.query,
-        queryBy: ['title'],
-        pageNumber: state.page,
-      ),
-    );
+      final result = await searchRecipesUseCase(
+        use_case.Params(
+          query: state.query,
+          queryBy: ['title'],
+          pageNumber: state.page,
+        ),
+      );
 
-    _searchRecipesResultHandler(result, emit, appendResult: true);
+      _searchRecipesResultHandler(result, emit, appendResult: true);
+    }
   }
 
   _searchRecipesResultHandler(
@@ -99,20 +101,22 @@ class SearchRecipeBloc extends Bloc<SearchRecipeEvent, SearchRecipeState> {
       {bool appendResult = false}) {
     return result.fold((failure) => _failureHandler(failure, emit, state),
         (result) {
-      late final List<Recipe> _recipes;
+      var _currentRecipes = List.from(state.recipes).cast<Recipe>();
+      final _resultRecipes = result.hits.map((h) => h.document).toList();
+
       if (appendResult) {
-        _recipes = List.from(state.recipes);
-        _recipes.addAll(result.hits.map((h) => h.document).toList());
+        _currentRecipes.addAll(_resultRecipes);
       } else {
-        _recipes = result.hits.map((h) => h.document).toList();
+        _currentRecipes = _resultRecipes;
       }
 
       emit(
         state.copyWith(
           status: SearchStatus.success,
-          recipes: _recipes,
+          recipes: _currentRecipes,
           resultCount: result.found,
           searchTime: result.searchTime,
+          canGetNextPage: _resultRecipes.isNotEmpty,
         ),
       );
     });

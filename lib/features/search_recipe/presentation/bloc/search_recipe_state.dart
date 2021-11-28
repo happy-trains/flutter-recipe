@@ -12,6 +12,7 @@ class SearchRecipeState extends Equatable {
   final Duration searchTime;
   final int resultCount;
   final String failureMessage;
+  final bool canGetNextPage;
 
   const SearchRecipeState({
     this.page = -1,
@@ -22,6 +23,7 @@ class SearchRecipeState extends Equatable {
     this.searchTime = Duration.zero,
     this.resultCount = -1,
     this.failureMessage = '',
+    this.canGetNextPage = true,
   });
 
   @override
@@ -34,6 +36,7 @@ class SearchRecipeState extends Equatable {
         searchTime,
         resultCount,
         failureMessage,
+        canGetNextPage,
       ];
 
   SearchRecipeState copyWith({
@@ -45,6 +48,7 @@ class SearchRecipeState extends Equatable {
     Duration? searchTime,
     int? resultCount,
     String? failureMessage,
+    bool? canGetNextPage,
   }) =>
       SearchRecipeState(
         page: page ?? this.page,
@@ -55,5 +59,6 @@ class SearchRecipeState extends Equatable {
         searchTime: searchTime ?? this.searchTime,
         resultCount: resultCount ?? this.resultCount,
         failureMessage: failureMessage ?? this.failureMessage,
+        canGetNextPage: canGetNextPage ?? this.canGetNextPage,
       );
 }
