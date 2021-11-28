@@ -37,7 +37,7 @@ class _SearchBarState extends State<SearchBar>
 
   @override
   void didChangeDependencies() {
-    _maxWidth = MediaQuery.of(context).size.width * 0.84;
+    _maxWidth = MediaQuery.of(context).size.width - 60;
     super.didChangeDependencies();
   }
 
@@ -86,7 +86,7 @@ class _SearchBarState extends State<SearchBar>
         focusNode: _focusNode,
         controller: _textEditingController,
         onChanged: (query) => _bloc.add(
-          GetRecipes(query),
+          GetRecipes(query, _perPage(context)),
         ),
         style: Theme.of(context).textTheme.headline2,
         cursorColor: Theme.of(context).colorScheme.secondary,
@@ -114,4 +114,10 @@ class _SearchBarState extends State<SearchBar>
     _textEditingController.dispose();
     super.dispose();
   }
+
+  int _perPage(BuildContext context) =>
+      MediaQuery.of(context).size.height > 500 ||
+              MediaQuery.of(context).size.width > 500
+          ? 20
+          : 10;
 }
