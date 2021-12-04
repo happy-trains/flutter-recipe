@@ -509,18 +509,20 @@ void main() {
         bloc.add(GetNextPage());
       },
       verify: (_) {
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber,
-          perPage: tPerPage,
-        )));
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber + 1,
-          perPage: tPerPage,
-        )));
+        verifyInOrder([
+          mockSearchRecipes(use_case.Params(
+            query: tPrunedSearchQuery,
+            queryBy: tQueryBy,
+            pageNumber: tPageNumber,
+            perPage: tPerPage,
+          )),
+          mockSearchRecipes(use_case.Params(
+            query: tPrunedSearchQuery,
+            queryBy: tQueryBy,
+            pageNumber: tPageNumber + 1,
+            perPage: tPerPage,
+          )),
+        ]);
         expect(bloc.state.page, equals(2));
       },
     );
@@ -619,18 +621,20 @@ void main() {
         bloc.add(GetNextPage());
       },
       verify: (_) {
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber,
-          perPage: tPerPage,
-        )));
-        verify(mockSearchRecipes(use_case.Params(
-          query: tPrunedSearchQuery,
-          queryBy: tQueryBy,
-          pageNumber: tPageNumber + 1,
-          perPage: tPerPage,
-        )));
+        verifyInOrder([
+          mockSearchRecipes(use_case.Params(
+            query: tPrunedSearchQuery,
+            queryBy: tQueryBy,
+            pageNumber: tPageNumber,
+            perPage: tPerPage,
+          )),
+          mockSearchRecipes(use_case.Params(
+            query: tPrunedSearchQuery,
+            queryBy: tQueryBy,
+            pageNumber: tPageNumber + 1,
+            perPage: tPerPage,
+          )),
+        ]);
       },
     );
   });
