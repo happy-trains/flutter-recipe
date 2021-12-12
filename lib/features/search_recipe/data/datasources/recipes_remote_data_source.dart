@@ -5,7 +5,7 @@ import '../../data/models/result_model.dart';
 import '../models/filter_model.dart';
 
 abstract class RecipesRemoteDataSource {
-  /// Uses Typsense to get data.
+  /// Searches the collection for [query].
   ///
   /// Throws a [ServerException] for all error codes.
   Future<ResultModel> search({
@@ -18,7 +18,7 @@ abstract class RecipesRemoteDataSource {
     int? perPage,
   });
 
-  /// Uses Typsense to get data.
+  /// Gets the number of documents in the collection.
   ///
   /// Throws a [ServerException] for all error codes.
   Future<int> getIndexSize();
