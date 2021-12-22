@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants.dart';
 import '../features/search_recipe/presentation/bloc/search_recipe_bloc.dart';
 import '../features/search_recipe/presentation/pages/search_recipes_page.dart';
-import '../injection_container.dart';
+import '../dependency_container.dart';
 
 class App extends StatelessWidget {
   @override
