@@ -57,6 +57,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void dispose() {
     super.dispose();
     _recipesScrollController.dispose();
+    BlocProvider.of<SearchRecipeBloc>(context).close();
   }
 }
 
